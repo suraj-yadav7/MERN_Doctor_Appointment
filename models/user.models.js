@@ -1,20 +1,18 @@
 import mongoose from "mongoose";
 
-const userSchema  = new mongoose.Schema(
-    {
-        name:{
-            type:String,
-            required:true
-        },
-        email:{
-            type:String,
-            required:true
-        },
-        password:{
-            type:String,
-            required:true
-        }
+const userSchema = new mongoose.Schema({
+    name:{
+        type:String,
+        required:[true,'Name is Required']
     },
-    {timestamps:true})
+    email:{
+        type:String,
+        required:[true,'Email is Must']
+    },
+    password:{
+        type:String,
+        required:[true,'Password length 8']
+    }
+})
 
-export const UserForm = mongoose.model('User', userSchema);
+export const UserRegister=mongoose.model('userRegisterData',userSchema);
