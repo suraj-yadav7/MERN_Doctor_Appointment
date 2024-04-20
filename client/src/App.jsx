@@ -6,6 +6,8 @@ import {BrowserRouter as Router, Routes, Route} from "react-router-dom"
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
+import ProctectedRoute from './components/ProtectedRoute'
+import PublicRoute from './components/PublicRoute'
 
 function App() {
 
@@ -14,9 +16,22 @@ function App() {
     <Header/>
     <Router>
       <Routes>
-        <Route exact path="/" element={<Home/>} /> 
-        <Route exact path="/login" element={<Login/>} />
-        <Route exact path='/register' element={<Register />} />
+        <Route exact path="/" element={
+        <ProctectedRoute >
+          <Home/>
+        </ProctectedRoute>
+        } /> 
+        <Route exact path="/login" element={
+          <PublicRoute>
+            <Login/> 
+          </PublicRoute>
+        }/>
+            
+        <Route exact path='/register' element={
+          <PublicRoute>
+            <Register />
+          </PublicRoute>
+        } />
       </Routes>
     </Router>
     <Footer/>
