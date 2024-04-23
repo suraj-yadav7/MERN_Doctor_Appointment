@@ -12,7 +12,23 @@ const userSchema = new mongoose.Schema({
     password:{
         type:String,
         required:[true,'Password length 8']
+    },
+    isAdmin:{
+        type:Boolean,
+        default:false
+    },
+    isDoctor:{
+        type:Boolean,
+        default:false
+    },
+    isNotification:{
+        type:Array,
+        default:[]
+    },
+    seenNotification:{
+        type:Array,
+        deafult:[]
     }
-})
+});
 
 export const UserRegister=mongoose.model('userRegisterData',userSchema);

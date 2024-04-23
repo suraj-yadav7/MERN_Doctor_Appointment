@@ -1,13 +1,18 @@
 import React from 'react'
 import '../styles/layout.scss'
-import { Link, useLocation } from 'react-router-dom';
-import { sidebarData } from '../Data/sidebarData.js';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { userSidebarData,adminSidebarData } from '../Data/sidebarData.js';
 import { useSelector } from 'react-redux';
 
 const Layout = ({children}) => {
     const user = useSelector((state)=> state.user.userData)
-    console.log("useSelector: ", user)
+    const sidebarData =user.isAdmin?adminSidebarData:userSidebarData
     const location = useLocation()
+    const navigate = useNavigate()
+    const handleLogout = ()=>{
+        sessionStorage.clear()
+        navigate('/login')
+    }
   return (
     <>
         <div className="main">
@@ -28,6 +33,10 @@ const Layout = ({children}) => {
                             )
                         })
                     }
+                        <div className={`menu-item`} onClick={handleLogout}>
+                                <i className='fa-solid fa-right-from-bracket' />
+                                Logout
+                        </div>
                     </div>
                 </div>
                 <div className="content">
@@ -39,7 +48,7 @@ const Layout = ({children}) => {
                         </div>
 
                         <div className='user'>
-                            <p>{user.charAt(0).toUpperCase()+user.slice(1)}</p>
+                            <p>{user.name && (user.name).charAt(0).toUpperCase()+(user.name).slice(1)}</p>
                         </div>
                     </div>
                     <div className="body">

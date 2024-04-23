@@ -34,7 +34,7 @@ const Register = ()=>{
                 body:JSON.stringify({name:data.name,email:data.email,password:data.password})
             })
             const result = await postResponse.json()
-            console.log('Reuslt of post: ', result)
+            console.log('Register result: ', result)
             if(result.status){
                 setNewUserData({
                     name:"",

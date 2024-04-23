@@ -9,7 +9,6 @@ const userProfileSlice = createSlice({
     initialState,
     reducers:{
        adduser:(state,action)=>{
-        console.log("reducerL : ", action.payload)
         state.userData=action.payload
        }
     }

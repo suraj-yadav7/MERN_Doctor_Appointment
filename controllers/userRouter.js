@@ -53,7 +53,6 @@ userRouter.post('/create-user', [
 userRouter.post('/login-user',async(req,res)=>{
     let email=req.body.email
     let userExist = await UserRegister.findOne({email})
-
     if(!userExist){
         return res.status(400).json({status:false, message:"user don't exist, signup"})
     }else{

@@ -2,7 +2,6 @@ import  jwt from "jsonwebtoken";
 
 const authorizationUser = async(req, res, next)=>{
     try{
-        console.log('first')
         
         let data = req.headers['authorization'].split(' ')[1]
         let userId=req.headers['userid']
@@ -12,7 +11,7 @@ const authorizationUser = async(req, res, next)=>{
             }
             else{
                 userId=decode.id
-                next()
+                next();
             }
         })
 

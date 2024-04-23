@@ -7,6 +7,7 @@ import userRouter from './controllers/userRouter.js'
 import authorizationUser from './middlewares/authorizationUser.js'
 import cors from "cors"
 import userDataRouter from './controllers/userDataRouter.js'
+import doctorRouter from './controllers/doctorRouter.js'
 
 const app = express()
 
@@ -41,3 +42,7 @@ app.use('/api', userRouter)
 
 // api for authorization of user and getting user data
 app.use('/api', authorizationUser,userDataRouter)
+
+
+// api for doctor registration and login
+app.use('/api', doctorRouter)

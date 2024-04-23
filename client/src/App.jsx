@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React from 'react'
 import './App.css'
 import Header from './components/Header'
 import Footer from './components/Footer'
@@ -8,6 +8,8 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import ProctectedRoute from './components/ProtectedRoute'
 import PublicRoute from './components/PublicRoute'
+import DoctorRegister from './pages/DoctorRegister'
+import DoctorLogin from './pages/DoctorLogin'
 
 function App() {
 
@@ -32,6 +34,8 @@ function App() {
             <Register />
           </PublicRoute>
         } />
+        <Route exact path='/doctor-register' element={<DoctorRegister/>} />
+        <Route exact path='/doctor-login' element={<DoctorLogin/>} />
       </Routes>
     </Router>
     <Footer/>
