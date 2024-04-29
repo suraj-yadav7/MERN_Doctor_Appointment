@@ -1,12 +1,23 @@
-import React from 'react'
+import React, { useState } from 'react'
 import '../styles/layout.scss'
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { userSidebarData,adminSidebarData } from '../Data/sidebarData.js';
+import { userSidebarData,adminSidebarData,doctorSiderbarData } from '../Data/sidebarData.js';
 import { useSelector } from 'react-redux';
 
 const Layout = ({children}) => {
     const user = useSelector((state)=> state.user.userData)
-    const sidebarData =user.isAdmin?adminSidebarData:userSidebarData
+    // console.log("is admin: ", user)
+    let sidebarData;
+    if(user.isAdmin){
+        sidebarData = adminSidebarData
+    }
+    else if(user.isDoctor){
+        sidebarData = doctorSiderbarData
+    }
+    else{
+        sidebarData = userSidebarData
+    }
+
     const location = useLocation()
     const navigate = useNavigate()
     const handleLogout = ()=>{
@@ -48,7 +59,7 @@ const Layout = ({children}) => {
                         </div>
 
                         <div className='user'>
-                            <p>{user.name && (user.name).charAt(0).toUpperCase()+(user.name).slice(1)}</p>
+                            <p>{user.name &&(user.name).split(' ')[0].charAt(0).toUpperCase()+(user.name).split(' ')[0].slice(1)}</p>
                         </div>
                     </div>
                     <div className="body">

@@ -1,10 +1,64 @@
-import React from 'react'
-
+import React,{useState} from 'react'
+import { useNavigate,Link } from 'react-router-dom'
+import toast, { Toaster } from 'react-hot-toast'
+import Input from '../components/Input'
+import Button from '../components/Button'
 const DoctorLogin = ()=>{
+
+    const[drLogin, setDrLogin] = useState('')
+    const navigate = useNavigate()
+
+    const handleChange =(event)=>{
+        const {name, value} =event.target
+        setDrLogin({...drLogin, [name]:value})
+    }
+
+    const doctorlogin = async()=>{
+        try{
+
+            let response = await fetch('http://localhost:5000/api/doctor-login',{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify({email:drLogin.email,password:drLogin.password })
+            })
+            let result = await response.json()
+            if(result.status){
+                toast.success(result.message)
+                sessionStorage.setItem('token',result.jwttoken)
+                sessionStorage.setItem('doctorId',result.doctorId)
+                setDrLogin('')
+                navigate('/')
+            }
+            else{
+                toast.error(result.message)
+            }
+            console.log('DrLogin res: ', result)
+        }
+        catch(error){
+            console.log('Failed to Post Doctor login data: ', error)
+        }
+    }
+
+    const handleSubmit =(e)=>{
+        e.preventDefault()
+        doctorlogin()
+    };
+
     return (
         <>
-            <div>
-                Doctor login
+            <div className="w-full h-screen flex flex-col justify-center items-center text-lg">
+                <Toaster />
+                <h3 className="text-4xl font-bold py-4">Doctor's Login</h3>
+                <form className="mb-16 w-96 border-2 border-black p-4" onSubmit={(e)=>handleSubmit(e)}>
+                    <Input type="text" name='email' value={drLogin.email} onChange={handleChange} placeholder='Email' className='emailIp mb-4' label='Email' />
+                    <Input type="password" name='password' value={drLogin.password} onChange={handleChange} placeholder='Password' className='passwordIp mb-2 ' label='Password' />
+                    <Button className="my-3 " type="submit">Login</Button>
+                        <p className="py-1">Don't have doctor account, <Link to='/doctor-register'><span className="text-blue-600 underline">create one</span></Link></p>
+                        <p className=" py-2">Login as user, <Link to='/login'><span className="text-blue-600 underline">Login here</span></Link></p>
+                </form>
+                
             </div>
         </>
     )

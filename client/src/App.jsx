@@ -10,6 +10,7 @@ import ProctectedRoute from './components/ProtectedRoute'
 import PublicRoute from './components/PublicRoute'
 import DoctorRegister from './pages/DoctorRegister'
 import DoctorLogin from './pages/DoctorLogin'
+import DoctorList from './components/DoctorList'
 
 function App() {
 
@@ -34,8 +35,10 @@ function App() {
             <Register />
           </PublicRoute>
         } />
-        <Route exact path='/doctor-register' element={<DoctorRegister/>} />
-        <Route exact path='/doctor-login' element={<DoctorLogin/>} />
+          <Route exact path='/doctor-register' element={<PublicRoute><DoctorRegister/></PublicRoute>} />
+        
+          <Route exact path='/doctor-login' element={<PublicRoute><DoctorLogin/></PublicRoute>} />
+        <Route exact path='/doctor-list' element={<DoctorList/>} />
       </Routes>
     </Router>
     <Footer/>

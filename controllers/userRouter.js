@@ -50,7 +50,12 @@ userRouter.post('/create-user', [
 // $$$$$$$$$$$$$$$$$$$$
 // Login user router
 // $$$$$$$$$$$$$$$$$$$$
-userRouter.post('/login-user',async(req,res)=>{
+userRouter.post('/login-user',[
+    body('email').isEmail(),
+    body('password').isLength({min:5})
+],async(req,res)=>{
+    let error = validationResult(req)
+    if(error.isEmpty()){
     let email=req.body.email
     let userExist = await UserRegister.findOne({email})
     if(!userExist){
@@ -67,7 +72,55 @@ userRouter.post('/login-user',async(req,res)=>{
             return res.status(400).json({status:false,message:"Try with correct credentials"});
         }
     }
+}
+else{
+    console.log('err,: ', error)
+    if(error.errors[0].path=='email'){
+        return res.status(400).json({status:false,message:'Must be valid email id'})
+    }else{
+        return res.status(400).json({status:false,message:"password is incorrect"})
+    }
+}
 });
+
+
+// $$$$$$$$$$$$$$$
+// Admin - pending and approved doctor list
+// $$$$$$$$$$$$$$$
+userRouter.post('/doctor-pendinglist', async(req, res)=>{
+    let admin=req.body.adminid
+    try{
+        let adminExist = await UserRegister.findById(admin)
+        if(adminExist){
+            return res.status(200).json({status:true, message:'Found Docotor Pending List', doctorlist:adminExist.isNotification})
+        }
+        else{
+            return res.status(400).json({status:false, message:'Admin details not found'})
+        }
+    }
+    catch(error){
+        console.log("error occured while geting admin details: ", error)
+        return res.status(400).json({status:false, message:'Error at admin details'})
+    }
+})
+
+
+userRouter.post('/doctor-approvedlist', async(req, res)=>{
+    let admin=req.body.adminid
+    try{
+        let adminExist = await UserRegister.findById(admin)
+        if(adminExist){
+            return res.status(200).json({status:true, message:'Found Docotor Approved List', doctorlist:adminExist.seenNotification})
+        }
+        else{
+            return res.status(400).json({status:false, message:'Admin details not found'})
+        }
+    }
+    catch(error){
+        console.log("error occured while geting admin details: ", error)
+        return res.status(400).json({status:false, message:'Error at admin details'})
+    }
+})
 
 export default userRouter;
 

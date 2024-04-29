@@ -1,17 +1,18 @@
 import express from 'express'
 import bcrypt from 'bcryptjs'
 import { body, validationResult } from 'express-validator';
-import { DoctorRegistration } from '../models/doctor.model/doctor.model.js';
+import { DoctorRegistration } from '../models/doctor.model.js';
 import jwt from 'jsonwebtoken';
+import { UserRegister } from '../models/user.models.js';
 
-doctorRouter=express.Router();
+const doctorRouter=express.Router();
 
-doctorRouter.Post('/doctor-register',[
+doctorRouter.post('/doctor-register',[
 body('fullname').isLength({min:4}),
 body('password').isLength({min:5}),
 body('email').isEmail(),
 body('gender').exists(),
-body('qualification').exists(),
+body('qualification').exists().notEmpty(),
 body('specialization').exists(),
 body('experience').exists().isNumeric(),
 body('fees').exists().isNumeric({min:200, max:100})], async(req,res)=>{
@@ -23,7 +24,7 @@ body('fees').exists().isNumeric({min:200, max:100})], async(req,res)=>{
             let email = req.body.email
             let doctor = await DoctorRegistration.findOne({email})
             if(!doctor){
-                let createDoctor = await DoctorRegistration.create({
+                let createDoctor = await DoctorRegistration({
                     fullname:req.body.fullname,
                     password:hashedPassword,
                     email:req.body.email,
@@ -33,7 +34,20 @@ body('fees').exists().isNumeric({min:200, max:100})], async(req,res)=>{
                     experience:req.body.experience,
                     fees:req.body.fees
                 })
-                return res.status(true).json({status:true, message:"User is Created"})
+                await createDoctor.save()
+                console.log("docot reg: ", createDoctor)
+                let adminExist = await UserRegister.findOne({isAdmin:true})
+                console.log("admin exist: ", adminExist)
+                if(adminExist && createDoctor){
+                    let notification =adminExist.isNotification;
+                    let doctorId=createDoctor._id.valueOf()
+                    notification.push({type:'doctor',message:`${createDoctor.fullname} has applied for doctor.`,data:{doctorid:doctorId, doctorName:createDoctor.fullname, doctorExp:createDoctor.experience, doctorSpecialization:createDoctor.specialization}});
+                    let adminId=adminExist._id.valueOf();
+                    await UserRegister.findByIdAndUpdate(adminId,{isNotification:notification});
+                    return res.status(200).json({status:true, message:"User is created pending at admin"});
+                }
+                console.log("admin data added")
+                console.log("notification needed")
             }
             else{
                 return res.status(400).json({status:false,message:"User Already Exist"})
@@ -45,6 +59,7 @@ body('fees').exists().isNumeric({min:200, max:100})], async(req,res)=>{
         }
     }
     else{
+        console.log('error: ', error)
         if(error.errors[0].path=='fullname'){
             return res.status(400).json({status:false,message:'Name must be 4 digit'})
         }
@@ -65,34 +80,54 @@ body('fees').exists().isNumeric({min:200, max:100})], async(req,res)=>{
         }
         else if(error.errors[0].path=='experience'){
             return res.status(400).json({status:false,message:'Need Experience'})
-
         }else{
-            return res.status(400).json({status:false,message:'Atleast fees must be 200'})
+            return res.status(400).json({status:false,message:'Need Fees'})
         }
     }   
 });
 
 
-
 //$$$$$$$$$$$$$$$$$
 // Doctor - login
 //$$$$$$$$$$$$$$$$$
-doctorRouter.post('/doctor-login', async(req,res)=>{
+doctorRouter.post('/doctor-login',[
+    body('email').isEmail(),
+    body('password').exists().isLength({min:5}),
+], async(req,res)=>{
+    let error = validationResult(req)
+    if(error.isEmpty()){
     let email = req.body.email
     let doctorExist = await DoctorRegistration.findOne({email})
-    if(doctorExist){
-        let comparePw= await bcrypt.compare(doctorExist.password, req.body.password)
-        if(comparePw){
-            let jwtsign = process.env.JWTSECRET
-            const userid=doctorExist._Id.valueOf()
-            let jwttoken = jwt.sign(userid, jwtsign)
-            return res.status(200).json({status:true,message:'User Found', jwttkoen:jwttoken, userId:userid})
+    console.log("Dr: ", doctorExist)
+    if(doctorExist.approveStatus !=='Pending'){
+        if(doctorExist){
+            let comparePw= await bcrypt.compare(req.body.password,doctorExist.password)
+            if(comparePw){
+                let jwtsign = process.env.JWTSECRET
+                const doctorid=doctorExist._id.valueOf()
+                let jwttoken = jwt.sign(doctorid, jwtsign)
+                return res.status(200).json({status:true,message:'User Found', jwttoken:jwttoken, doctorId:doctorid})
+            }
+            else{
+                return res.status(400).json({status:false, message:'Password is Incorrect'})
+            }
         }
         else{
-            return res.status(400).json({status:false, message:'Password is Incorrect'})
-        }
+            return res.status(404).json({status:false, message:"User don't exist, Register"})
+            }
     }
     else{
-        return res.status(400).json({status:false, message:"User don't exist, Register"})
+        return res.status(400).json({status:false, message:'Admin Approval Needed'})
+    }
+    }
+else{
+     if(error.errors[0].path=='email'){
+        return res.status(400).json({status:false, message:'must be valid email id'})
+     }   
+     else{
+        return res.status(400).json({status:false, message:'password is incorrect'})
+     }
     }
 });
+
+export default doctorRouter;

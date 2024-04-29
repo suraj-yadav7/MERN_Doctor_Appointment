@@ -43,3 +43,26 @@ export const adminSidebarData = [
         icon:'fa-solid fa-user'
     }
 ]
+
+export const doctorSiderbarData =[
+    {
+        name:'Home',
+        path:'/',
+        icon:'fa-solid fa-house-chimney-window'
+    },
+    {
+        name:'Doctors',
+        path:'/doctor',
+        icon:'fa-solid fa-user-doctor'
+    },
+    {
+        name:'User',
+        path:'/user',
+        icon:'fa-solid fa-user'
+    },
+    {
+        name:'Doctor Profile',
+        path:'/user-profile',
+        icon:'fa-solid fa-user'
+    }
+]

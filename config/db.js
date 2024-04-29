@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import dotenv from'dotenv';
-import colors from 'colors';
 
 // configuring dotenv file to access mongodb uri
 dotenv.config()

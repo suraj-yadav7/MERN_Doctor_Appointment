@@ -1,5 +1,4 @@
 import express from "express";
-import mongoose from "mongoose";
 import morgan from "morgan";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js"
@@ -8,6 +7,8 @@ import authorizationUser from './middlewares/authorizationUser.js'
 import cors from "cors"
 import userDataRouter from './controllers/userDataRouter.js'
 import doctorRouter from './controllers/doctorRouter.js'
+import colors from 'colors'
+import AppAccApproval from "./controllers/AppAccApproval.js";
 
 const app = express()
 
@@ -40,9 +41,11 @@ app.use(cors(corsOption))
 // api for registration and login
 app.use('/api', userRouter)
 
+// api for doctor registration and login
+app.use('/api', doctorRouter)
+
+app.use('/api', AppAccApproval)
+
 // api for authorization of user and getting user data
 app.use('/api', authorizationUser,userDataRouter)
 
-
-// api for doctor registration and login
-app.use('/api', doctorRouter)

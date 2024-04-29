@@ -26,13 +26,22 @@ const doctorSchema = new mongoose.Schema({
         required:[true,'Specialization required']
     },
     experience:{
-        type:Float,
+        type:Number,
         required:[true,'Experience required']
     },
     fees:{
         type:Number,
         required:[true, 'Consultation Fees required']
+    },
+    isDoctor:{
+        type:Boolean,
+        default:true
+    }
+    ,
+    approveStatus:{
+        type:String,
+        default:'Pending'
     }
 });
 
-export  const DoctorRegistration = mongoose.model('doctorreg',doctorSchema);
+export  const DoctorRegistration = mongoose.model('doctorregister',doctorSchema);

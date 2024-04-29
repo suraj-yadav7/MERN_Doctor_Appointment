@@ -4,6 +4,7 @@ import Button from "../components/Button";
 import { Link, useNavigate } from "react-router-dom";
 import {toast,Toaster} from 'react-hot-toast'
 
+
 const Register = ()=>{
     const [newUserData, setNewUserData] = useState({
         name:"",
