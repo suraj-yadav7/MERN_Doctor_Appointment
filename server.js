@@ -39,13 +39,14 @@ const corsOption={
 app.use(cors(corsOption))
 
 // api for registration and login
-app.use('/api', userRouter)
+app.use('/api', userRouter);
 
 // api for doctor registration and login
 app.use('/api', doctorRouter)
 
 app.use('/api', AppAccApproval)
 
+
 // api for authorization of user and getting user data
-app.use('/api', authorizationUser,userDataRouter)
+app.use('/api', authorizationUser, userDataRouter)
 

@@ -85,7 +85,7 @@ else{
 
 
 // $$$$$$$$$$$$$$$
-// Admin - pending and approved doctor list
+// Admin - pending doctor list
 // $$$$$$$$$$$$$$$
 userRouter.post('/doctor-pendinglist', async(req, res)=>{
     let admin=req.body.adminid
@@ -105,6 +105,9 @@ userRouter.post('/doctor-pendinglist', async(req, res)=>{
 })
 
 
+// $$$$$$$$$$$$$$
+// Admin - approved doctor list
+// $$$$$$$$$$$$$$
 userRouter.post('/doctor-approvedlist', async(req, res)=>{
     let admin=req.body.adminid
     try{
@@ -120,7 +123,7 @@ userRouter.post('/doctor-approvedlist', async(req, res)=>{
         console.log("error occured while geting admin details: ", error)
         return res.status(400).json({status:false, message:'Error at admin details'})
     }
-})
+});
 
 export default userRouter;
 

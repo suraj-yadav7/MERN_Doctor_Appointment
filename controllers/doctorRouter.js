@@ -130,4 +130,34 @@ else{
     }
 });
 
+
+// $$$$$$$$$$$$$$
+// Get list of docotor list on user Homepage
+//$$$$$$$$$$$$$$$
+doctorRouter.get('/get-doctorList',   async(req, res)=>{
+    try{
+        console.log('runnn')
+        let doctorList = await DoctorRegistration.find()
+        console.log("doct:  ", doctorList)
+        let doctorArr=doctorList.map((dr)=>{
+           return {
+                drName:dr.fullname,
+                specialization:dr.specialization,
+                fees:dr.fees
+            }
+        })
+
+        if(doctorList){
+            return res.status(200).json({status:true,message:'Doctor List found', drData:doctorArr})
+        }
+        else{
+            return res.status(400).json({status:false,message:'Doctor list not found'})
+        }
+    }
+    catch(error){
+        console.log("error at giving doctor list: ", error)
+    }
+
+})
+
 export default doctorRouter;

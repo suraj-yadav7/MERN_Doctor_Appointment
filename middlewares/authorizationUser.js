@@ -1,6 +1,7 @@
 import  jwt from "jsonwebtoken";
 
 const authorizationUser = async(req, res, next)=>{
+    console.log("authorization runned")
     try{
         
         let data = req.headers['authorization'].split(' ')[1]
