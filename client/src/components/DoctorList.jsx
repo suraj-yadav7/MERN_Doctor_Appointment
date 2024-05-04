@@ -34,7 +34,7 @@ const DoctorList = ()=>{
         setDrApprovedList(result.doctorlist)
     }
 
-    // Request Approve Doctor registration
+    // Request to admin for Doctor account approval/registration
     const approveDr = async(doctorId)=>{
         let response = await fetch('http://localhost:5000/api/account-approval',{
             method:'POST',

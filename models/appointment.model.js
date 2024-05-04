@@ -9,15 +9,30 @@ const appointmentSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    patientMsg:{
+    doctorId:{
         type:String,
-        required:[true,'Few Word of problem']
+        required:true
+    },
+    doctorName:{
+        type:String,
+        required:true
+    },
+    doctorSpecialztn:{
+        type:String,
+        required:true
+    },
+    doctorFees:{
+        type:Number,
+        required:true
     },
     dateofAppnt:{
         type:String,
-        required:[true,'Date is must']
+        required:true
+    },
+    appointStatus:{
+        type:String,
+        default:'Pending'
     }
-
 });
 
 export const PatientAppointment = mongoose.model('patientAppointment', appointmentSchema);

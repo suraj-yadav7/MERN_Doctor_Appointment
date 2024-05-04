@@ -27,7 +27,11 @@ const userSchema = new mongoose.Schema({
     },
     seenNotification:{
         type:Array,
-        deafult:[]
+        default:[]
+    },
+    appointmentBooked:{
+        type:Array,
+        default:[]
     }
 });
 

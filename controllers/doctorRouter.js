@@ -99,7 +99,7 @@ doctorRouter.post('/doctor-login',[
     let email = req.body.email
     let doctorExist = await DoctorRegistration.findOne({email})
     console.log("Dr: ", doctorExist)
-    if(doctorExist.approveStatus !=='Pending'){
+    if(doctorExist.approveStatus!=='Pending'){
         if(doctorExist){
             let comparePw= await bcrypt.compare(req.body.password,doctorExist.password)
             if(comparePw){
@@ -136,11 +136,10 @@ else{
 //$$$$$$$$$$$$$$$
 doctorRouter.get('/get-doctorList',   async(req, res)=>{
     try{
-        console.log('runnn')
         let doctorList = await DoctorRegistration.find()
-        console.log("doct:  ", doctorList)
         let doctorArr=doctorList.map((dr)=>{
            return {
+                drId:dr._id.valueOf(),
                 drName:dr.fullname,
                 specialization:dr.specialization,
                 fees:dr.fees
@@ -158,6 +157,6 @@ doctorRouter.get('/get-doctorList',   async(req, res)=>{
         console.log("error at giving doctor list: ", error)
     }
 
-})
+});
 
 export default doctorRouter;

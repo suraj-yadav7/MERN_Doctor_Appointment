@@ -41,6 +41,14 @@ const doctorSchema = new mongoose.Schema({
     approveStatus:{
         type:String,
         default:'Pending'
+    },
+    appoinmentsPending:{
+        type:Array,
+        default:[]
+    },
+    appointmentsHistory:{
+        type:Array,
+        default:[]
     }
 });
 
