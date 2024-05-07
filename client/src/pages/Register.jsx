@@ -7,9 +7,10 @@ import {toast,Toaster} from 'react-hot-toast'
 
 const Register = ()=>{
     const [newUserData, setNewUserData] = useState({
-        name:"",
+        name:'',
         email:'',
-        password:""
+        password:'',
+        gender:''
     })
     const navigate =useNavigate()
 
@@ -23,8 +24,8 @@ const Register = ()=>{
         postUserData(newUserData)
     }
 
+    console.log("new user data: ", newUserData)
     async function postUserData(data){
-        console.log('run')
         try{
             let postResponse = await fetch("http://localhost:5000/api/create-user",
             {
@@ -32,15 +33,16 @@ const Register = ()=>{
                 headers:{
                     'Content-Type':'application/json'
                 },
-                body:JSON.stringify({name:data.name,email:data.email,password:data.password})
+                body:JSON.stringify({name:data.name,email:data.email,password:data.password,gender:data.gender})
             })
             const result = await postResponse.json()
             console.log('Register result: ', result)
             if(result.status){
                 setNewUserData({
                     name:"",
-                    email:'',
-                    password:""
+                    email:"",
+                    password:"",
+                    gender:"",
                 })
                 toast.success(result.message)
                 setTimeout(()=>{
@@ -67,6 +69,13 @@ const Register = ()=>{
                 <form className="mb-16 w-96 border-2 border-black p-4" onSubmit={(e)=>handleSubmit(e)}>
                     <Input type="text" name='name' value={newUserData.name} onChange={handleChange} placeholder='Username' className='nameIp my-2' label='Name' required={true}/>
                     <Input type="text" name="email" value={newUserData.email} onChange={handleChange} placeholder='Email' className='emailIp my-2' label='Email' required={true} />
+                    <div className='genderIp my-2'>
+                        <span className='mr-2'>Gender: </span>
+                        <label className='mr-2' htmlFor='3'>Male</label>
+                        <input type='radio' name='gender' value='male' onChange={handleChange} className='mr-8' id='3'/>
+                        <label htmlFor='4' className='mr-2'>Female</label>
+                        <input type='radio' name='gender' value='female' onChange={handleChange} id='4' />
+                    </div>
                     <Input type="password" name="password" value={newUserData.password} onChange={handleChange} placeholder='Password' className='passwordIp my-2' label='Password' required={true}/>
                     <Button className="my-2" type="submit">Register</Button>
                     <p className=" py-2">Already a user, <Link to='/login'><span className="text-blue-600 underline">Login here</span></Link></p>

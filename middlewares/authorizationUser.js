@@ -1,7 +1,6 @@
 import  jwt from "jsonwebtoken";
 
 const authorizationUser = async(req, res, next)=>{
-    console.log("authorization runned")
     try{
         
         let data = req.headers['authorization'].split(' ')[1]
@@ -12,12 +11,10 @@ const authorizationUser = async(req, res, next)=>{
                 return res.status(401).json({status:false, message:'You are NOT Authorized'})
             }
             else{
-                // decode.id is id passed during login og user in jwt.sign
+                // decode.id is id passed during login of user in jwt.sign
                 if(doctorId !== 'null'){
                     doctorId=decode.id
-                    console.log("runned dr")
                 }else{
-                    console.log("runned user")
                     userId=decode.id
                 }
                 next();

@@ -5,6 +5,8 @@ import { PatientAppointment } from '../models/appointment.model.js';
 
 const AppAccApproval = express.Router();
 
+// $$$$$$ Account Approval $$$$$$$$$
+// doctor register and request for account approval from admin
 AppAccApproval.post('/account-approval', async(req, res)=>{
     let id = req.body.doctorid;
     try{
@@ -35,11 +37,14 @@ AppAccApproval.post('/account-approval', async(req, res)=>{
     });
 
 
+// $$$$$$$$ Doctor Appointment $$$$$$$$$$
+// Insertion of patient appointments in core colllection, doctor and user also
 AppAccApproval.post('/doctor-appointment', async(req, res)=>{
     let doctorId=req.body.doctorid
     let patientId=req.body.patientid
     try{
-        // insert data in appoinment schema, all appointment data will be present in that
+        // Insert patient appointments in  core appoinment collections
+        // All patients appointments will present ther
         if(doctorId && patientId){
             let appointment = await PatientAppointment.create({
                 patientId:req.body.patientid,
@@ -51,7 +56,7 @@ AppAccApproval.post('/doctor-appointment', async(req, res)=>{
                 dateofAppnt:req.body.appointdate,
             })
 
-            // update doctor appointment list
+            // Inserting appointment list in doctor collection
             let appointId=appointment._id.valueOf()
 
             let doctorExist = await DoctorRegistration.findById(doctorId)
@@ -62,13 +67,14 @@ AppAccApproval.post('/doctor-appointment', async(req, res)=>{
                 patientId:req.body.patientid,
                 patientName:req.body.patientname,
                 appointDate:req.body.appointdate,
+                approveStatus:'Pending'
             }
             pendingAppont.push(pendingAppointData)
             
             await DoctorRegistration.findByIdAndUpdate(doctorId, {appoinmentsPending:pendingAppont})
         }
         
-        // updating user appointment list
+        // Inserting appointmnet in user(patient) collection
         let userExist = await UserRegister.findById(patientId)
         if(userExist){
             let bookedAppoint=userExist.appointmentBooked
@@ -79,6 +85,7 @@ AppAccApproval.post('/doctor-appointment', async(req, res)=>{
                 healthissueDept:req.body.doctorspecilztn,
                 doctorFees:req.body.doctorfees,
                 appointDate:req.body.appointdate,
+                approveStatus:'Pending'
             }
             bookedAppoint.push(patientAppointData)
             await UserRegister.findByIdAndUpdate(patientId, {appointmentBooked:bookedAppoint})
@@ -97,8 +104,7 @@ AppAccApproval.post('/doctor-appointment', async(req, res)=>{
     });
 
 
-// doctor appointment list 
-
+//Each Doctor pending appointment list response to client component
 AppAccApproval.post('/appointment-list', async(req, res)=>{
     let doctorId = req.body.doctorid
     try{
@@ -117,8 +123,28 @@ AppAccApproval.post('/appointment-list', async(req, res)=>{
     }
 })
 
+// Each Doctor previous/history appointment list response to client component
+AppAccApproval.post('/appointment-history', async(req,res)=>{
+    let doctorId =req.body.doctorid
+    try{
+        let doctorExist = await DoctorRegistration.findById(doctorId)
+        if(doctorExist){
+            let appointHistory = doctorExist.appointmentsHistory
+            res.status(200).json({status:true, message:'Doctor appointment history found', data:appointHistory})
+        }
+        else{
+            res.status(400).json({statusflase, mesaage:'Doctor not found'})
+        }
+    }
+    catch(error){
+        console.log("Error occured while getting Dr appointment history list", error)
+        res.status(400).json({status:false, message:'Unexpected Error'})
+    }
+})
+
+// Doctor approve patient appointment request.
 AppAccApproval.post('/accept-appointment', async(req,res)=>{
-    let appointmentId=req.body.appointmentid
+    let appointmentId=req.body.appointmentid;
     let patientId= req.body.patientid
     let doctorId=req.body.doctorid
     try{
@@ -126,23 +152,32 @@ AppAccApproval.post('/accept-appointment', async(req,res)=>{
         if(appointmentExist){
             let status=appointmentExist.appointStatus
             if(status=='Pending'){
-                await PatientAppointment.findByIdAndUpdate(appointmentId, {appointStatus:"Accepted"})
+               let patientResponse= await PatientAppointment.findByIdAndUpdate(appointmentId, {appointStatus:"Accepted"})
+
+               let doctorExist = await DoctorRegistration.findById(doctorId)
+               if(doctorExist){
+                   let pendingAppon = doctorExist.appoinmentsPending
+                   let index = pendingAppon.findIndex((appoint) => appoint.appointmentId==appointmentId)
+                   let sliceAppoint = pendingAppon.splice(index,1)
+                   sliceAppoint[0].approveStatus="Accepted"
+                   const appontHistory= doctorExist.appointmentsHistory
+                   appontHistory.push(sliceAppoint[0])
+                   await DoctorRegistration.findByIdAndUpdate(doctorId, {appoinmentsPending:pendingAppon,appointmentsHistory: appontHistory})
+                   
+                   let userExist = await UserRegister.findById(patientId)
+                   if(userExist){
+                       let userAppoint= userExist.appointmentBooked
+                       let updateArr = userAppoint.map((apponit)=> {
+                           if(apponit.appointmentId == appointmentId){
+                               apponit.approveStatus='Accepted'
+                            }
+                        })
+                        await UserRegister.findByIdAndUpdate(patientId, {appointmentBooked:userAppoint})
+                    }
+                }
             }
         }
-
-        let doctorExist = await DoctorRegistration.findById(doctorId)
-        if(doctorExist){
-            let pendingAppon = doctorExist.appoinmentsPending
-            let index = pendingAppon.findIndex((appoint) => appoint.appointmentId==appointmentId)
-            let sliceAppoint = pendingAppon.splice(index,1)
-
-            const appontHistory= doctorExist.appointmentsHistory
-            appontHistory.push(sliceAppoint)
-            
-            await DoctorRegistration.findByIdAndUpdate(doctorId, {appointmentsHistory: appontHistory})
-        }
-        
-        res.status(400).json({status:true, message:'Confirmed appointment'})
+        res.status(200).json({status:true, appointmentid: appointmentId, message:'Appointment Confirmed  '});
     }
     catch(error){
         console.log("Error occured while approving patient appointment: ", error)
@@ -150,5 +185,70 @@ AppAccApproval.post('/accept-appointment', async(req,res)=>{
     }
 })
 
+// Doctor Rejects patient appointment
+AppAccApproval.post("/reject-appointment", async(req, res)=>{
+    let patientId=req.body.patientid
+    let doctorId=req.body.doctorid
+    let appointmentId=req.body.appointmentid
+    try{
+        // Changing pending status to reject in PatientAppointment collection
+        let appointmentExist = await PatientAppointment.findById(appointmentId)
+        if(appointmentExist){
+            let status=appointmentExist.appointStatus
+            if(status=='Pending'){
+                await PatientAppointment.findByIdAndUpdate(appointmentId, {appointStatus:"Rejected"})
+
+            // let update rejection in doctor appointment historylist
+            let doctorExist = await DoctorRegistration.findById(doctorId)
+            if(doctorExist){
+                let pendingAppon = doctorExist.appoinmentsPending
+                let index = pendingAppon.findIndex((appoint) => appoint.appointmentId==appointmentId)
+                let sliceAppoint = pendingAppon.splice(index,1)
+                sliceAppoint[0].approveStatus="Rejected"
+                const appontHistory= doctorExist.appointmentsHistory
+                appontHistory.push(sliceAppoint[0])
+                await DoctorRegistration.findByIdAndUpdate(doctorId, {appoinmentsPending:pendingAppon,appointmentsHistory: appontHistory})
+
+                let userExist = await UserRegister.findById(patientId)
+                   if(userExist){
+                       let userAppoint= userExist.appointmentBooked
+                       let updateArr = userAppoint.map((apponit)=> {
+                           if(apponit.appointmentId == appointmentId){
+                               apponit.approveStatus='Rejected'
+                            }
+                        })
+                        await UserRegister.findByIdAndUpdate(patientId, {appointmentBooked:userAppoint})
+                    }
+                }
+            }
+        }
+        res.status(200).json({status:true, message:"Patient appoitment rejected", appointmentid:appointmentId})
+    }
+    catch(error){
+        console.log("Error occured while rejecting patient appointment: ", error)
+        res.status(400).json({status:false, message:'Error while rejection appointment'})
+    }
+})
+
+
+// User cum patient all appointments list of pending, approve, rejected response to component
+
+AppAccApproval.post('/user-appointments', async(req, res)=>{
+    let userId=req.body.userid
+    try{
+        let userExist = await UserRegister.findById(userId)
+        if(userExist){
+            let allAppointList = userExist.appointmentBooked
+            return res.status(200).json({status:true, message:"User appointment list found", data:allAppointList})
+        }
+        else{
+            return res.status(400).json({status:false, message:"Doctor appointment list not found"})
+        }
+    }
+    catch(error){
+        console.log("Error occured while geting user appointments list: ", error)
+        res.status(400).json({status:false, message:"Error at geting user appointment list"})
+    }
+})
 
 export default AppAccApproval;

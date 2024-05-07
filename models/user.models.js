@@ -13,6 +13,10 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:[true,'Password length 8']
     },
+    gender:{
+        type:String,
+        required:[true,'Gender is Required']
+    },
     isAdmin:{
         type:Boolean,
         default:false

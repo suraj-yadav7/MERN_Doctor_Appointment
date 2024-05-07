@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "./Layout";
 
 const DoctorList = ()=>{
@@ -46,6 +46,10 @@ const DoctorList = ()=>{
         let result = await response.json()
         console.log("app response: ", result)
     }
+
+    useEffect(()=>{
+        getDoctorList()
+    },[])
     return(
         <>
         <Layout>
@@ -82,7 +86,6 @@ const DoctorList = ()=>{
                             })
                         }
                 </div>
-                <button onClick={getDoctorList} style={{border:'2px solid black'}} >Get DR List</button>
             </div>
         </Layout>
 

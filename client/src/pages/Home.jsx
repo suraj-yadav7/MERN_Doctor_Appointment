@@ -7,6 +7,8 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import toast, { Toaster } from 'react-hot-toast'
 import Appointments from '../components/Appointments';
+import UserAppointment from '../components/UserAppointment';
+import Profile from '../components/Profile';
 
 
 const Home = () => {
@@ -76,7 +78,6 @@ const handleDateChange = (date,id) => {
 const handleBookAppointment = async(drData)=>{
   if(drData.drId==drID){
     try{
-      console.log("try string date: ", stringDate)
       let response = await fetch('http://localhost:5000/api/doctor-appointment',{
         method:'POST',
         headers:{
@@ -86,7 +87,7 @@ const handleBookAppointment = async(drData)=>{
       })
 
       let result = await response.json()
-      console.log("response appointment booking: ", result)
+      console.log("appointment booking: ", result)
       if(result.status){
         toast.success(result.message)
       }
@@ -99,14 +100,10 @@ const handleBookAppointment = async(drData)=>{
     }
   }
   else{
-    console.log('custom rinm')
   toast.custom(<div className='border border-blue-400 rounded-md'>Please select Appointment date first.</div>)
   }
 }
-console.log('username: ', userData)
 
-
-console.log("date: ", selectedDate)
 useEffect(()=>{
     authUser();
     if(userId){
@@ -119,8 +116,6 @@ useEffect(()=>{
         {
       <div>
         <Toaster />
-
-        
         <h2 className='text-green-200'>Book Your Appointment</h2>
         <h4>Our Well Qualified Doctors</h4>
         <div className='drMainContainer  flex flex-wrap gap-4 border border-red-100'>
@@ -151,8 +146,10 @@ useEffect(()=>{
         </div>
       </div>
       }
-      <Appointments />
+      {/* <Appointments /> */}
+      {/* <UserAppointment /> */}
     </Layout>
+    <Profile />
     </>
   )
 };

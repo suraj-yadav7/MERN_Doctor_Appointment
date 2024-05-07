@@ -46,8 +46,6 @@ body('fees').exists().isNumeric({min:200, max:100})], async(req,res)=>{
                     await UserRegister.findByIdAndUpdate(adminId,{isNotification:notification});
                     return res.status(200).json({status:true, message:"User is created pending at admin"});
                 }
-                console.log("admin data added")
-                console.log("notification needed")
             }
             else{
                 return res.status(400).json({status:false,message:"User Already Exist"})
@@ -137,8 +135,9 @@ else{
 doctorRouter.get('/get-doctorList',   async(req, res)=>{
     try{
         let doctorList = await DoctorRegistration.find()
-        let doctorArr=doctorList.map((dr)=>{
-           return {
+        let doctorArr=doctorList.filter((dr)=> dr.approveStatus==='Approved')
+        .map((dr)=>{
+            return {
                 drId:dr._id.valueOf(),
                 drName:dr.fullname,
                 specialization:dr.specialization,

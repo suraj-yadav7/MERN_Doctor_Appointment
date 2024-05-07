@@ -9,7 +9,8 @@ const userRouter = express.Router()
 userRouter.post('/create-user', [
     body("name").isLength({min:4}),
     body("email").isEmail(),
-    body("password").isLength({min:5})
+    body("password").isLength({min:5}),
+    body("gender").exists().notEmpty(),
 ],async(req, res)=>{
     let error = validationResult(req)
     if(!error.isEmpty()){
@@ -18,6 +19,9 @@ userRouter.post('/create-user', [
         }
         else if(error.errors[0].path=='name'){
             return res.status(400).json({status:false,message:"Name must be 4 letters"})
+        }
+        else if(error.errors[0].path=='gender'){
+            return res.status(400).json({status:false, message:'Gender is must'})
         }
         else{
             return res.status(400).json({status:false, message:"Provide valid email id"})
@@ -36,12 +40,14 @@ userRouter.post('/create-user', [
                 await UserRegister.create({
                     'name':req.body.name,
                     'email':req.body.email,
+                    'gender':req.body.gender,
                     'password':hashedPassword
                 })
                 return res.status(200).json({status:true, message:'User is created'});
             }
         }
         catch(err){
+            console.log("Error Occured while user registration: ", err)
             return res.status(400).json({status:false, message:"Failed to create user"});
         }
     }
@@ -126,5 +132,8 @@ userRouter.post('/doctor-approvedlist', async(req, res)=>{
 });
 
 export default userRouter;
+
+
+
 
 

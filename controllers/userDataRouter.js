@@ -8,11 +8,12 @@ userDataRouter.post('/getUserData',async (req,res)=>{
     try{
         let userId=req.headers['userid']
         let doctorId=req.headers['doctorid']
-        console.log("doctor: ", typeof(doctorId), doctorId,'userId: ', typeof(userId), userId)
         if(doctorId !== 'null'){
             let doctorData = await DoctorRegistration.findOne({_id:doctorId})
                 if(doctorData){
-                    return res.status(200).json({status:true, message:'Found Doctor Details', data:{name:doctorData.fullname, email:doctorData.email, isAdmin:false}})
+                    return res.status(200).json({status:true, message:'Found Doctor Details', data:{userid:doctorData._id.valueOf(), name:doctorData.fullname, email:doctorData.email,
+                    specialist:doctorData.specialization,
+                    Qualification:doctorData.qualification,pendingAppoints:doctorData.appoinmentsPending.length,totalAppoints:doctorData.appointmentsHistory.length, gender:doctorData.gender, isAdmin:false, isUser:false}})
                 }
                 else{
                     return res.status(400).json({status:false, message:'Unable to find Doctor'})
@@ -24,7 +25,7 @@ userDataRouter.post('/getUserData',async (req,res)=>{
                 return res.status(400).json({status:'false',message:'unable to find user'})
             }
             else{
-                return res.status(200).json({status:true,message:'Found User', data:{name:userdata.name, email:userdata.email, isAdmin:userdata.isAdmin, isDoctor:false, notification:userdata.isNotification, seenNotification:userdata.seenNotification}})
+                return res.status(200).json({status:true,message:'Found User', data:{userid:userdata._id.valueOf(), name:userdata.name, email:userdata.email, gender:userdata.gender, totalAppoints:userdata.appointmentBooked.length, isAdmin:userdata.isAdmin, isDoctor:false, notification:userdata.isNotification, seenNotification:userdata.seenNotification}})
             }
         }  
     }
