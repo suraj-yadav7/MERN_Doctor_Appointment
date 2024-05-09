@@ -27,12 +27,12 @@ AppAccApproval.post('/account-approval', async(req, res)=>{
             }
         }
         else{
-            return res.status(400).json({status:false, message:`Doctor don't exist`})
+            return res.status(400).json({status:false, message:`Doctor don't exist`});
         }
     }
     catch(error){
-        console.log("Error occured while doctor approve: ", error)
-        return res.status(400).json({status:false, message:"Error at doctor approval"})
+        console.log("Error occured while doctor approve: ", error);
+        return res.status(400).json({status:false, message:"Error at doctor approval"});
     }
     });
 
@@ -54,7 +54,7 @@ AppAccApproval.post('/doctor-appointment', async(req, res)=>{
                 doctorSpecialztn:req.body.doctorspecilztn,
                 doctorFees:req.body.doctorfees,
                 dateofAppnt:req.body.appointdate,
-            })
+            });
 
             // Inserting appointment list in doctor collection
             let appointId=appointment._id.valueOf()
@@ -88,7 +88,7 @@ AppAccApproval.post('/doctor-appointment', async(req, res)=>{
                 approveStatus:'Pending'
             }
             bookedAppoint.push(patientAppointData)
-            await UserRegister.findByIdAndUpdate(patientId, {appointmentBooked:bookedAppoint})
+            await UserRegister.findByIdAndUpdate(patientId, {appointmentBooked:bookedAppoint});
         }
         return res.status(200).json({status:true, message:'Appointment is booked'})
         }

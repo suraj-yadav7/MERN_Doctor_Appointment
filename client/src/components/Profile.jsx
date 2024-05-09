@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux';
+import Layout from './Layout';
 
 const Profile = () => {
 
@@ -7,30 +8,33 @@ const Profile = () => {
 
   return (
     <>
-        <div className='profile-container flex flex-col justify-center items-center h-1/2'>
-            <h3>User Details</h3>
-            <div className='text-xl border border-gray-100 w-1/2'>
-                <ul>
-                    <li>User Id:{userDetails.userid?.slice(0,4)} </li>
-                    <li>Name: {userDetails.name}</li>
-                    <li>Gender: {userDetails.gender} </li>
-                    <li>Email: {userDetails.email}</li>
+    <Layout>
+        <div className='profile-container flex flex-col justify-center items-center h-1/2 '>
+            <h3 className='small:text-2xl'>Details</h3>
+            <div className=' flex px-6 flex-col flex-wrap justify-start items-center text-xl p-4 border w-2/4 small:w-3/4 small:text-base '>
+                <div className='capitalize'>
+                <ul >
+                    <li className='border border-yellow-200 py-2 px-2 '><span className='font-semibold mr-4 '>User Id: </span>{userDetails.userid?.slice(0,4)} </li>
+                    <li className='py-2 border border-yellow-200 px-2'><span className='font-semibold my-6 mr-6'>Name: </span> {userDetails.name}</li>
+                    <li className='border border-yellow-200 py-2 px-2'><span className='font-semibold mr-4'>Gender: </span>{userDetails.gender} </li>
+                    <li className='py-2 border border-yellow-200 px-2 normal-case'><span className='font-semibold mr-8'>Email: </span>{userDetails.email}</li>
                     {
-                        userDetails.isUser==false? 
+                        userDetails.isDoctor? 
                         <div>
-                        <li>Specialist: {userDetails.specialist}</li>
-                        <li>Qualification: {userDetails.Qualification}</li>
-                        <li>Pending Appointments: {userDetails.pendingAppoints}</li>
+                        <li className='border border-yellow-200 py-2 px-2'><span className='font-semibold mr-4'>Specialist: </span>{userDetails.specialist}</li>
+                        <li className='py-2 border border-yellow-200 py-2 px-2'><span className='font-semibold'>Qualification: </span>{userDetails.Qualification}</li>
+                        <li className='border border-yellow-200 py-2 px-2'><span className='font-semibold mr-4'>Pending Appointments: </span>{userDetails.pendingAppoints}</li>
                         </div>
                         :''
                     }
-                    <li></li>
-                    <li>Total Appointment: {userDetails.totalAppoints} </li>
+                    <li className='pb-2 border border-yellow-200 py-2 px-2'><span className='font-semibold mr-4'>Total Appointment: </span>{userDetails.totalAppoints} </li>
                 </ul>
+                </div>
             </div>
         </div>
+    </Layout>
     </>
   )
-}
+};
 
 export default Profile;

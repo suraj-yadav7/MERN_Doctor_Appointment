@@ -66,38 +66,38 @@ const Appointments = () => {
 
     useEffect(()=>{
         getAppointmentList()
-    },[])
+    },[]);
 
   return (
     <>
         <div className='appointment-container'>
             <Toaster />
-            <div className='listNavigate text-2xl py-4'>
-                <span onClick={getAppointmentList} className={`mr-6 mx-2 ${pending? 'border border-gray-400 rounded-md p-0.5 text-gray-400':''} hover:cursor-pointer`}>Pending Appoinments</span>
-                <span onClick={appointmentHistory} className={`mr-6 mx-2 ${!pending? 'border border-gray-400 rounded-md p-0.5 text-gray-400':''} hover:cursor-pointer`}>Appoinments History</span>
+            <div className='listNavigate text-xl py-4'>
+                <span onClick={getAppointmentList} className={`mr-6 mx-2 p-1 border border-gray-400  rounded-md  ${pending? 'bg-slate-400 border-gray-400 p-px text-gray-100 text-xl':''} hover:cursor-pointer`}>Pending Appoinments</span>
+                <span onClick={appointmentHistory} className={`mr-6 mx-2 p-1 border border-gray-400  rounded-md  ${!pending? 'bg-slate-400 border-gray-400 p-px text-gray-100 text-xl':''} hover:cursor-pointer`}>Appoinments History</span>
             </div>
             <div>
             { pending?
                     appointList && appointList.map((appoint)=>(
                         <div className='border border-yellow-200 text-2xl'key={appoint.appointmentId} >
-                            <ul className='flex flex-row gap-4 flex-wrap'>
-                                <li><span className='font-medium'>Patient Name</span>: {appoint.patientName}</li>
-                                <li><span className='font-medium'>Patient Id</span>: {appoint.patientId.slice(0,5)}</li>
-                                <li><span className='font-medium'>Appointment Date</span>: {appoint.appointDate}</li>
-                                <li><span className='font-medium'>Appointment Status</span>: {appoint.approveStatus}</li>
+                            <ul className='flex flex-row gap-5 flex-wrap pl-4'>
+                                <li className='basis-1/4 2xl:basis-1/6 capitalize'><span className='font-medium'>Patient Name</span>: {appoint.patientName}</li>
+                                <li className='basis-1/1 mr-8'><span className='font-medium '>Patient Id</span>: {appoint.patientId.slice(0,5)}</li>
+                                <li className='basis-1/8 mr-8'><span className='font-medium'>Appointment Date</span>: {appoint.appointDate}</li>
+                                <li className='basis-1/8'><span className='font-medium'>Appointment Status</span>: {appoint.approveStatus}</li>
                             </ul>
-                            <button onClick={()=>acceptAppoint(appoint.appointmentId, appoint.patientId)} className='bg-green-600 border border-gray-700 rounded-md mx-4 my-2 px-3 hover:bg-green-400 hover:text-white'>Accept</button>
-                            <button onClick={()=>rejectAppoint(appoint.appointmentId, appoint.patientId)} className='bg-red-600 border border-gray-700 rounded-md mx-4 my-2 px-3 hover:bg-red-400 hover:text-white'>Reject</button>
+                            <button  onClick={()=>acceptAppoint(appoint.appointmentId, appoint.patientId)} className='bg-green-600 border border-gray-700 rounded-md mx-4 my-4 px-3 hover:bg-green-400 hover:text-white'>Accept</button>
+                            <button onClick={()=>rejectAppoint(appoint.appointmentId, appoint.patientId)} className='bg-red-600 border border-gray-700 rounded-md mx-4 my-4 px-3 hover:bg-red-400 hover:text-white'>Reject</button>
                         </div>
                     ))
                 :<div>
                     { apponHistoryList && apponHistoryList.map((historyAppon) =>(
                     <div className='border border-yellow-200 text-2xl'key={apponHistoryList.appointmentId} >
-                            <ul className='flex flex-row gap-10 flex-wrap py-4'>
-                                <li><span className='font-medium'>Patient Name</span>: {historyAppon.patientName}</li>
-                                <li><span className='font-medium'>Patient Id</span>: {historyAppon.patientId.slice(0,5)}</li>
-                                <li><span className='font-medium'>Appointment Date</span>: {historyAppon.appointDate.slice(0,10)}</li>
-                                <li><span className='font-medium'>Appointment Status</span>: {historyAppon.approveStatus}</li>
+                            <ul className='flex flex-row gap-4 flex-wrap py-2 pl-2'>
+                                <li className='basis-1/4 2xl:basis-1/6 capitalize'><span className='font-medium'>Patient Name</span>: {historyAppon.patientName}</li>
+                                <li className='basis-1/1 mr-8'><span className='font-medium'>Patient Id</span>: {historyAppon.patientId.slice(0,5)}</li>
+                                <li className='basis-1/8 mr-4'><span className='font-medium'>Appointment Date</span>: {historyAppon.appointDate.slice(0,10)}</li>
+                                <li className='basis-1/8'><span className='font-medium'>Appointment Status</span>: {historyAppon.approveStatus}</li>
                             </ul>
                         </div>
                             ))
@@ -108,6 +108,5 @@ const Appointments = () => {
         </div>
     </>
   )
-}
-
+};
 export default Appointments;

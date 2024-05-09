@@ -24,7 +24,6 @@ const Register = ()=>{
         postUserData(newUserData)
     }
 
-    console.log("new user data: ", newUserData)
     async function postUserData(data){
         try{
             let postResponse = await fetch("http://localhost:5000/api/create-user",
@@ -60,15 +59,15 @@ const Register = ()=>{
     
     return (
         <>
-            <div className="w-full h-screen flex flex-col justify-center items-center text-lg">
+            <div className=" bg-[#E2F4C5] w-full h-screen flex flex-col justify-center items-center text-lg">
             <Toaster
                  position="top-center"
                     reverseOrder={false}
             />
                 <h3 className="text-4xl font-bold py-4">Register Page</h3>
-                <form className="mb-16 w-96 border-2 border-black p-4" onSubmit={(e)=>handleSubmit(e)}>
-                    <Input type="text" name='name' value={newUserData.name} onChange={handleChange} placeholder='Username' className='nameIp my-2' label='Name' required={true}/>
-                    <Input type="text" name="email" value={newUserData.email} onChange={handleChange} placeholder='Email' className='emailIp my-2' label='Email' required={true} />
+                <form className="bg-[#FCFFE0] mb-16 w-96 border border-black p-4" onSubmit={(e)=>handleSubmit(e)}>
+                    <Input type="text" name='name' value={newUserData.name} onChange={handleChange} placeholder='Username' className='nameIp my-2 bg-[#FCFFE0]' label='Name' />
+                    <Input type="text" name="email" value={newUserData.email} onChange={handleChange} placeholder='Email' className='emailIp my-2 bg-[#FCFFE0]' label='Email'  />
                     <div className='genderIp my-2'>
                         <span className='mr-2'>Gender: </span>
                         <label className='mr-2' htmlFor='3'>Male</label>
@@ -76,8 +75,8 @@ const Register = ()=>{
                         <label htmlFor='4' className='mr-2'>Female</label>
                         <input type='radio' name='gender' value='female' onChange={handleChange} id='4' />
                     </div>
-                    <Input type="password" name="password" value={newUserData.password} onChange={handleChange} placeholder='Password' className='passwordIp my-2' label='Password' required={true}/>
-                    <Button className="my-2" type="submit">Register</Button>
+                    <Input type="password" name="password" value={newUserData.password} onChange={handleChange} placeholder='Password' className='passwordIp my-2 bg-[#FCFFE0]' label='Password' />
+                    <Button className="my-2 bg-[#a5d39b] hover:bg-[#bbebb1] hover:border-gray-100" type="submit">Register</Button>
                     <p className=" py-2">Already a user, <Link to='/login'><span className="text-blue-600 underline">Login here</span></Link></p>
                 </form>
             </div>

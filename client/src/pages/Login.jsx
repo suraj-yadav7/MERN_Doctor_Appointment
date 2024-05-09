@@ -48,17 +48,16 @@ const Login = ()=>{
 
     return (
         <>
-            <div className="w-full h-screen flex flex-col justify-center items-center text-lg">
+            <div className="bg-[#E2F4C5] w-full h-screen flex flex-col justify-center items-center text-lg">
                 <Toaster />
                 <h3 className="text-4xl font-bold py-4">Login</h3>
-                <form className="mb-16 w-96 border-2 border-black p-4" onSubmit={(e)=>handleSubmit(e)}>
-                    <Input type="text" name='email' value={loginData.email} onChange={handleChange} placeholder='Email' className='emailIp mb-4' label='Email' required={true} />
-                    <Input type="password" name='password' value={loginData.password} onChange={handleChange} placeholder='Password' className='passwordIp mb-2 ' label='Password' required={true}/>
-                    <Button className="my-3 " type="submit">Login</Button>
-                        <p className="py-1">Don't have account,<Link to='/register'><span className="text-blue-600 underline">create here</span></Link></p>
+                <form className="bg-[#FCFFE0] mb-16 w-96 border border-black p-4" onSubmit={(e)=>handleSubmit(e)}>
+                    <Input type="text" name='email' value={loginData.email} onChange={handleChange} placeholder='Email' className='emailIp mb-4 bg-[#FCFFE0]' label='Email'  />
+                    <Input type="password" name='password' value={loginData.password} onChange={handleChange} placeholder='Password' className='passwordIp mb-2 bg-[#FCFFE0]' label='Password' />
+                    <Button className="my-3 bg-[#a5d29a] border border-gray-400 hover:bg-[#aae09c] hover:border-gray-100 " type="submit">Login</Button>
+                        <p className="py-1">Don't have account,<Link to='/register'><span className=" text-blue-600 underline">create here</span></Link></p>
                         <p>Login as a <Link to ='/doctor-login' ><span className="text-blue-600 underline">Doctor</span></Link></p>
                 </form>
-                
             </div>
         </>
     )

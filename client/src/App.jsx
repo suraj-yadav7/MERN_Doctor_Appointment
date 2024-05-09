@@ -11,6 +11,10 @@ import PublicRoute from './components/PublicRoute'
 import DoctorRegister from './pages/DoctorRegister'
 import DoctorLogin from './pages/DoctorLogin'
 import DoctorList from './components/DoctorList'
+import Profile from './components/Profile'
+import UserRoute from './components/UserRoute'
+import UserAppointment from './components/UserAppointment'
+import AdminDoctorList from './components/AdminDoctorList'
 
 function App() {
 
@@ -39,6 +43,9 @@ function App() {
         
           <Route exact path='/doctor-login' element={<PublicRoute><DoctorLogin/></PublicRoute>} />
         <Route exact path='/doctor-list' element={<DoctorList/>} />
+        <Route exact path ='/profile' element={ <UserRoute><Profile /></UserRoute> }/>
+        <Route exact path = '/appoint' element={<UserRoute><UserAppointment/></UserRoute>} />
+        <Route exact path='/alldoctors' element={<UserRoute><AdminDoctorList/></UserRoute>} />
       </Routes>
     </Router>
     <Footer/>

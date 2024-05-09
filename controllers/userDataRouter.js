@@ -13,7 +13,7 @@ userDataRouter.post('/getUserData',async (req,res)=>{
                 if(doctorData){
                     return res.status(200).json({status:true, message:'Found Doctor Details', data:{userid:doctorData._id.valueOf(), name:doctorData.fullname, email:doctorData.email,
                     specialist:doctorData.specialization,
-                    Qualification:doctorData.qualification,pendingAppoints:doctorData.appoinmentsPending.length,totalAppoints:doctorData.appointmentsHistory.length, gender:doctorData.gender, isAdmin:false, isUser:false}})
+                    Qualification:doctorData.qualification,pendingAppoints:doctorData.appoinmentsPending.length,totalAppoints:doctorData.appointmentsHistory.length, gender:doctorData.gender, isAdmin:false, isDoctor:true}})
                 }
                 else{
                     return res.status(400).json({status:false, message:'Unable to find Doctor'})

@@ -6,12 +6,13 @@ import { useSelector } from 'react-redux';
 
 const Layout = ({children}) => {
     const user = useSelector((state)=> state.user.userData)
-    // console.log("is admin: ", user)
+    let isAdmin = user.isAdmin
+    let isDoctor = user.isDoctor
     let sidebarData;
-    if(user.isAdmin){
+    if(isAdmin){
         sidebarData = adminSidebarData
     }
-    else if(user.isDoctor){
+    else if(isDoctor){
         sidebarData = doctorSiderbarData
     }
     else{
@@ -30,7 +31,7 @@ const Layout = ({children}) => {
             <div className="layout">
                 <div className="sidebar">
                     <div className="logo">
-                        <h6>DOC Appointment</h6>
+                        <h6>DR Appointment</h6>
                         <hr/></div>
                     <div className="menu">Menu
                     {
@@ -44,22 +45,21 @@ const Layout = ({children}) => {
                             )
                         })
                     }
-                        <div className={`menu-item`} onClick={handleLogout}>
-                                <i className='fa-solid fa-right-from-bracket' />
+                        <div className={`menu-item hover:text-red-500`} onClick={handleLogout}>
+                                <i className='fa-solid fa-right-from-bracket ' />
                                 Logout
                         </div>
                     </div>
                 </div>
                 <div className="content">
                     <div className="header">
-                        <div className='alert'>
-                            <Link to='#'>
-                            <i className='fa-solid fa-bell' />
-                            </Link>
+                        <div className='dashboardInfo text-2xl '>
+                            {
+                                isDoctor?<h3>Doctor Dashboard</h3>:isAdmin?<h3>Admin Dashboard</h3>:<h3>User Dashboard</h3>
+                            }
                         </div>
-
                         <div className='user'>
-                            <p>{user.name &&(user.name).split(' ')[0].charAt(0).toUpperCase()+(user.name).split(' ')[0].slice(1)}</p>
+                            <p className='capitalize'>{user.name &&(user.name)}</p>
                         </div>
                     </div>
                     <div className="body">

@@ -10,13 +10,8 @@ export const userSidebarData = [
         icon:'fa-solid fa-calendar-check'
     },
     {
-        name:'Doctor',
-        path:'/doctor',
-        icon:'fa-solid fa-user-doctor'
-    },
-    {
         name:'Profile',
-        path:'/user-profile',
+        path:'/profile',
         icon:'fa-solid fa-user'
     }
 ]
@@ -29,17 +24,12 @@ export const adminSidebarData = [
     },
     {
         name:'Doctors',
-        path:'/doctor',
+        path:'/alldoctors',
         icon:'fa-solid fa-user-doctor'
     },
     {
-        name:'User',
-        path:'/user',
-        icon:'fa-solid fa-user'
-    },
-    {
         name:'Profile',
-        path:'/user-profile',
+        path:'/profile',
         icon:'fa-solid fa-user'
     }
 ]
@@ -50,19 +40,10 @@ export const doctorSiderbarData =[
         path:'/',
         icon:'fa-solid fa-house-chimney-window'
     },
-    {
-        name:'Doctors',
-        path:'/doctor',
-        icon:'fa-solid fa-user-doctor'
-    },
-    {
-        name:'User',
-        path:'/user',
-        icon:'fa-solid fa-user'
-    },
+
     {
         name:'Doctor Profile',
-        path:'/user-profile',
+        path:'/profile',
         icon:'fa-solid fa-user'
     }
 ]

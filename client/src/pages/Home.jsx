@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Layout from '../components/Layout'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { adduser } from '../redux/features/userProfileSlice'
 import { Link } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
@@ -9,18 +9,24 @@ import toast, { Toaster } from 'react-hot-toast'
 import Appointments from '../components/Appointments';
 import UserAppointment from '../components/UserAppointment';
 import Profile from '../components/Profile';
+import DoctorList from '../components/DoctorList';
 
 
 const Home = () => {
 
 const dispatch = useDispatch();
-const [ userData, setUserData] = useState('')
+const [userData, setUserData] = useState('')
 const [selectedDate, setSelectedDate] = useState(null);
 const [stringDate, setStringDate] = useState('')
 const [drID, setDrID] = useState('')
 const [drList, setDrList] = useState('')
-let userId= sessionStorage.getItem('userId')
 
+// With this varaibles the different components will be rendered
+// like user comp, doctor, admin
+const data=useSelector((state)=> state.user.userData)
+let isAdmin = data.isAdmin
+let isDoctor = data.isDoctor
+let userId= sessionStorage.getItem('userId')
 
 const authUser=async()=>{
   try{
@@ -106,50 +112,48 @@ const handleBookAppointment = async(drData)=>{
 
 useEffect(()=>{
     authUser();
-    if(userId){
+    if(!isAdmin && !isDoctor){
       doctorList()
     }
   },[]);
   return (
     <>
     <Layout>
-        {
+      {
+        isAdmin? <DoctorList />: isDoctor? <Appointments/> :
       <div>
         <Toaster />
-        <h2 className='text-green-200'>Book Your Appointment</h2>
-        <h4>Our Well Qualified Doctors</h4>
-        <div className='drMainContainer  flex flex-wrap gap-4 border border-red-100'>
+        <h2 className='text-3xl py-2'>Book Your Appointment</h2>
+        <h5 className='text-2xl py-1'>Our Well Qualified Doctors</h5>
+        <div className='drMainContainer text-2xl flex flex-wrap gap-6 border border-red-100'>
           {drList && drList.map((dr)=>(
 
-            <div className='drCard border border-gray-800' key={dr.drId}>
-            <p>Doctor Name:{dr.drName}</p>
-            <p>Specialist:{dr.specialization}</p>
-            <p>Doctor Fees:{dr.fees}</p>
-            <p>Available 10am to 2pm</p>
-            <div>
-            <DatePicker className='border border-gray-500'
-              selected={drID==dr.drId?selectedDate:''}
-              onChange={(date)=>handleDateChange(date,dr.drId)}
-              showTimeSelect
-              timeFormat="HH:mm"
-              timeIntervals={30}
-              dateFormat="MMMM d, yyyy h:mm aa"
-              timeCaption="Time"
-              placeholderText="Select date and time"
-              minTime={startTime}
-              maxTime={endTime} />
-            <label><i className="fa-regular fa-calendar-days"></i></label>
-            </div>
-            <button onClick={()=> handleBookAppointment(dr)} className='border border-gray-300 rounded-md m-1 px-4 hover:bg-green-300 hover:text-white'>Book Now</button>
+            <div className='drCard border border-gray-800 p-3' key={dr.drId}>
+              <p>Doctor Name:{dr.drName}</p>
+              <p>Specialist:{dr.specialization}</p>
+              <p>Doctor Fees:{dr.fees}</p>
+              <p>Available 10am to 2pm</p>
+              <div>
+              <DatePicker className='border border-gray-500'
+                selected={drID==dr.drId?selectedDate:''}
+                onChange={(date)=>handleDateChange(date,dr.drId)}
+                showTimeSelect
+                timeFormat="HH:mm"
+                timeIntervals={30}
+                dateFormat="MMMM d, yyyy h:mm aa"
+                timeCaption="Time"
+                placeholderText="Select date and time"
+                minTime={startTime}
+                maxTime={endTime} />
+              <label><i className="fa-regular fa-calendar-days"></i></label>
+              </div>
+            <button onClick={()=> handleBookAppointment(dr)} className='border border-gray-600 rounded-md my-2 mt-4 px-1 bg-[#7ABA78] text-white hover:bg-[#8ddd8b] hover:text-white'>Book Now</button>
           </div>  
           ))}
         </div>
       </div>
       }
-      {/* <Appointments /> */}
-      {/* <UserAppointment /> */}
     </Layout>
-    <Profile />
     </>
   )
 };

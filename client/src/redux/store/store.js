@@ -4,7 +4,6 @@ import userProfileSlice from '../features/userProfileSlice.js'
 
 const store=configureStore({
     reducer:{
-        alert:alertSlices,
         user:userProfileSlice,
     }
 })
