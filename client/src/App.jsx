@@ -42,7 +42,6 @@ function App() {
           <Route exact path='/doctor-register' element={<PublicRoute><DoctorRegister/></PublicRoute>} />
         
           <Route exact path='/doctor-login' element={<PublicRoute><DoctorLogin/></PublicRoute>} />
-        <Route exact path='/doctor-list' element={<DoctorList/>} />
         <Route exact path ='/profile' element={ <UserRoute><Profile /></UserRoute> }/>
         <Route exact path = '/appoint' element={<UserRoute><UserAppointment/></UserRoute>} />
         <Route exact path='/alldoctors' element={<UserRoute><AdminDoctorList/></UserRoute>} />

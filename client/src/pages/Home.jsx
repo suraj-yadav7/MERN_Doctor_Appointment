@@ -2,32 +2,31 @@ import React, { useEffect, useState } from 'react'
 import Layout from '../components/Layout'
 import { useDispatch, useSelector } from 'react-redux'
 import { adduser } from '../redux/features/userProfileSlice'
-import { Link } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import toast, { Toaster } from 'react-hot-toast'
 import Appointments from '../components/Appointments';
-import UserAppointment from '../components/UserAppointment';
-import Profile from '../components/Profile';
 import DoctorList from '../components/DoctorList';
+import Pagination from '../components/Pagination';
 
 
 const Home = () => {
+  //Dispatch this data to store
+  const [userData, setUserData] = useState('')
 
-const dispatch = useDispatch();
-const [userData, setUserData] = useState('')
-const [selectedDate, setSelectedDate] = useState(null);
-const [stringDate, setStringDate] = useState('')
-const [drID, setDrID] = useState('')
-const [drList, setDrList] = useState('')
+  // Date handled current and string for database as per doctorid
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [stringDate, setStringDate] = useState('')
+  const [drID, setDrID] = useState('')
+  
+  // Below three state for user/patient data render in useffect
+  const [drList, setDrList] = useState('')
+  const [admin, setAdmin] = useState('')
+  const [doctor, setDoctor] = useState('')
+  
+  const dispatch = useDispatch();
 
-// With this varaibles the different components will be rendered
-// like user comp, doctor, admin
-const data=useSelector((state)=> state.user.userData)
-let isAdmin = data.isAdmin
-let isDoctor = data.isDoctor
-let userId= sessionStorage.getItem('userId')
-
+// Authenticate all user and trasmit their data in store
 const authUser=async()=>{
   try{
     let response = await fetch('http://localhost:5000/api/getUserData',{
@@ -38,16 +37,18 @@ const authUser=async()=>{
         doctorid:sessionStorage.getItem('doctorId'),
       }
     })
-    let userData = await response.json();
-    setUserData(userData.data)
-    dispatch(adduser(userData.data))
+    let userdata = await response.json();
+    setAdmin(userdata.data.isAdmin)
+    setDoctor(userdata.data.isDoctor)
+    setUserData(userdata.data)
+    dispatch(adduser(userdata.data))
   }
   catch(error){
     console.log("Error while posting getuserdata api", error)
   }
-}
+};
 
-// fetching doctor list for user
+// fetching doctor list for user/patient
 const doctorList=async()=>{
   try{
     let response = await fetch("http://localhost:5000/api/get-doctorList",{
@@ -63,7 +64,7 @@ const doctorList=async()=>{
   catch(error){
     console.log("error occured while getting doctore list: ", error)
   }
-}
+};
 
 const startTime = new Date();
 startTime.setHours(9, 30);
@@ -73,14 +74,16 @@ endTime.setHours(13, 30)
 
 const handleDateChange = (date,id) => {
 
-  // Formatted string date passed to schema
+  //This Formatted string date passed to schema
   const formattedDate = `${date.getDate().toString().padStart(2, '0')}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getFullYear()} ${date.toLocaleTimeString()}`;
 
-  // this date to for date picker 
+  // this actual date is for date picker working 
   setSelectedDate(date);
   setDrID(id)
+  // string date for schema
   setStringDate(formattedDate)
 };
+// Appointment is booked by user
 const handleBookAppointment = async(drData)=>{
   if(drData.drId==drID){
     try{
@@ -102,39 +105,50 @@ const handleBookAppointment = async(drData)=>{
       }
     }
     catch(error){
-
     }
   }
   else{
-  toast.custom(<div className='border border-blue-400 rounded-md'>Please select Appointment date first.</div>)
+  toast.custom(<div className='border-2 p-1  border-blue-400 rounded-md text-2xl'>Please select Appointment date first.</div>)
   }
+};
+
+// Pagination for user/patient 
+const [currentPage, setCurrentPage] = useState(1)
+let itemsPerPage=6
+const startIndex = (currentPage-1)*itemsPerPage
+const endIndex = startIndex+itemsPerPage
+const onPageChange= (page)=>{
+  setCurrentPage(page)
 }
+const slicedDrList = drList.slice(startIndex, endIndex)
 
 useEffect(()=>{
     authUser();
-    if(!isAdmin && !isDoctor){
-      doctorList()
+    if(admin==false && doctor==false){
+      doctorList();
     }
   },[]);
+
   return (
     <>
     <Layout>
       {
-        isAdmin? <DoctorList />: isDoctor? <Appointments/> :
+        admin? <DoctorList />: doctor? <Appointments/> :
       <div>
-        <Toaster />
+        <Toaster toastOptions={{style:{fontSize:'1.5rem'}}} />
         <h2 className='text-3xl py-2'>Book Your Appointment</h2>
         <h5 className='text-2xl py-1'>Our Well Qualified Doctors</h5>
-        <div className='drMainContainer text-2xl flex flex-wrap gap-6 border border-red-100'>
-          {drList && drList.map((dr)=>(
+        <div className='drMainContainer justify-center items-center text-2xl flex flex-wrap gap-10 border border-red-100'>
+          {drList && drList.length>1?drList&& slicedDrList.map((dr)=>(
 
-            <div className='drCard border border-gray-800 p-3' key={dr.drId}>
-              <p>Doctor Name:{dr.drName}</p>
-              <p>Specialist:{dr.specialization}</p>
-              <p>Doctor Fees:{dr.fees}</p>
+            <div className='drCard border flex justify-center items-center border-gray-800 p-3 capitalize w-1/4' key={dr.drId}>
+              <div>
+              <p>Doctor Name: {dr.drName}</p>
+              <p>Specialist: {dr.specialization}</p>
+              <p>Doctor Fees: {dr.fees}</p>
               <p>Available 10am to 2pm</p>
               <div>
-              <DatePicker className='border border-gray-500'
+              <DatePicker className='border border-gray-500 w-50 text-xl'
                 selected={drID==dr.drId?selectedDate:''}
                 onChange={(date)=>handleDateChange(date,dr.drId)}
                 showTimeSelect
@@ -145,12 +159,17 @@ useEffect(()=>{
                 placeholderText="Select date and time"
                 minTime={startTime}
                 maxTime={endTime} />
-              <label><i className="fa-regular fa-calendar-days"></i></label>
+              <span><i className="fa-regular fa-calendar-days ml-2"></i></span>
               </div>
             <button onClick={()=> handleBookAppointment(dr)} className='border border-gray-600 rounded-md my-2 mt-4 px-1 bg-[#7ABA78] text-white hover:bg-[#8ddd8b] hover:text-white'>Book Now</button>
           </div>  
-          ))}
+          </div>
+          )) :<div><h4>Fething Doctor List.... </h4></div>}
         </div>
+        {
+          drList && drList.length>0?
+          <Pagination  dataLen={drList.length} currentPage={currentPage} itemsPerPage={itemsPerPage} onPageChange={onPageChange}/>:""
+        }
       </div>
       }
     </Layout>

@@ -5,12 +5,12 @@ export default {
   theme: {
     extend: {},
     screens: {
-      'sm': '640px',
-      'md': '768px',
+      'sm':{'min': '441px','max':'880px' },
+      'md': '881px',
       'lg': '1024px',
       'xl': '1280px',
       '2xl':'1540px',
-      'small': { 'raw': '(max-width: 800px)' }
+      'phone': { 'raw': '(max-width: 440px)' },
     },
   },
   plugins: [],

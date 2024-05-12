@@ -22,7 +22,7 @@ AppAccApproval.post('/account-approval', async(req, res)=>{
                     seenNotific.push(notification[index])
                     let updateNotification = notification.splice(index,1)
                     await UserRegister.findByIdAndUpdate(adminExist._id.valueOf(), {isNotification:notification, seenNotification:seenNotific})
-                    return res.status(200).json({status:true, mesaage:'User Approved & Admin updated'})
+                    return res.status(200).json({status:true, message:'Doctor Profile Approved'})
                 }
             }
         }
@@ -36,8 +36,38 @@ AppAccApproval.post('/account-approval', async(req, res)=>{
     }
     });
 
+    // Doctor profile rejected by admin
+    AppAccApproval.post('/reject-doctor', async(req, res)=>{
+        let doctorId = req.body.doctorid
+        try{
+            let doctorExist = await DoctorRegistration.findById(doctorId);
+            if(doctorExist){
+                let response = await DoctorRegistration.findByIdAndUpdate(doctorId, {approveStatus:"Rejected"})
+            if(response){
+                let adminExist = await UserRegister.findOne({isAdmin:true})
+                if(adminExist){
+                    let notific = adminExist.isNotification
+                    let seenNotific = adminExist.seenNotification
+                    let index = notific.findIndex((elem)=> elem.data.doctorid == doctorId)
+                    seenNotific.push(notific[index])
+                    notific.splice(index, 1)
+                    await UserRegister.findByIdAndUpdate(adminExist._id.valueOf(), {isNotification:notific, seenNotification:seenNotific})
+                    res.status(200).json({status:true, message:"Doctor Profile is Rejected"})
+                }
+            }
+        }
+        else{
+            res.status(400).json({status:false, message:"Doctor Don't exist"});
+        }
+    }
+    catch(error){
+        console.log("Error occured while rejecting doctor ", error)
+        res.status(400).json({status:false, mesaage:'Error at rejecting doctor profile'})
+    }
+    });
 
-// $$$$$$$$ Doctor Appointment $$$$$$$$$$
+
+// $$$$$$$$ User Appointment $$$$$$$$$$
 // Insertion of patient appointments in core colllection, doctor and user also
 AppAccApproval.post('/doctor-appointment', async(req, res)=>{
     let doctorId=req.body.doctorid
@@ -222,7 +252,7 @@ AppAccApproval.post("/reject-appointment", async(req, res)=>{
                 }
             }
         }
-        res.status(200).json({status:true, message:"Patient appoitment rejected", appointmentid:appointmentId})
+        res.status(200).json({status:true, message:"Patient appointment rejected", appointmentid:appointmentId})
     }
     catch(error){
         console.log("Error occured while rejecting patient appointment: ", error)
@@ -232,7 +262,6 @@ AppAccApproval.post("/reject-appointment", async(req, res)=>{
 
 
 // User cum patient all appointments list of pending, approve, rejected response to component
-
 AppAccApproval.post('/user-appointments', async(req, res)=>{
     let userId=req.body.userid
     try{

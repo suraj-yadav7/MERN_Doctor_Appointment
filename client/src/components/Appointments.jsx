@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Toaster, toast } from 'react-hot-toast'
+import Pagination from './Pagination';
 const Appointments = () => {
 
     const [appointList, setAppointList] = useState('')
     const [apponHistoryList, setApponHistoryList] = useState('')
-    const [pending, setPending] = useState(false)
+    const [pending, setPending] = useState(true)
 
     const getAppointmentList = async()=>{
         setPending(true)
@@ -59,48 +60,85 @@ const Appointments = () => {
         let result = await response.json()
         console.log("response: ", result)
         if(result.status){
-            toast.custom(<div className='border border-red-300 rounded-md'>{result.message}</div>)
+            toast.custom(<div className='border-2 border-red-300 rounded-md text-2xl p-1'>{result.message}</div>)
             setAppointList((prev) => prev.filter((elem)=> elem.appointmentId != result.appointmentid))
         }
     }
+    // Pagination for pending appointment list
+    const [currentPageList, setCurrentPageList] =useState(1)
+    const itemsPerPageList = 4
+    const startIndexList = (currentPageList-1)*itemsPerPageList
+    const endIndexList = startIndexList+itemsPerPageList
+    const onPageChangeList = (page)=>{
+        setCurrentPageList(page)
+    }
+    const slicedappointList = appointList.slice(startIndexList, endIndexList)
+
+    // Pagination Appointmen History list
+    const [currentPageHistory, setCurrentPageHistory] =useState(1)
+    const itemsPerPageHistory = 5
+    const startIndexHistory = (currentPageHistory-1)*itemsPerPageHistory
+    const endIndexHistory= startIndexHistory+itemsPerPageHistory
+    const onPageChangeHistory = (page)=>{
+        setCurrentPageHistory(page)
+    }
+    const slicedappointHistory = apponHistoryList.slice(startIndexHistory, endIndexHistory)
+
 
     useEffect(()=>{
+        console.log("runnded history")
         getAppointmentList()
     },[]);
 
   return (
     <>
         <div className='appointment-container'>
-            <Toaster />
-            <div className='listNavigate text-xl py-4'>
-                <span onClick={getAppointmentList} className={`mr-6 mx-2 p-1 border border-gray-400  rounded-md  ${pending? 'bg-slate-400 border-gray-400 p-px text-gray-100 text-xl':''} hover:cursor-pointer`}>Pending Appoinments</span>
-                <span onClick={appointmentHistory} className={`mr-6 mx-2 p-1 border border-gray-400  rounded-md  ${!pending? 'bg-slate-400 border-gray-400 p-px text-gray-100 text-xl':''} hover:cursor-pointer`}>Appoinments History</span>
+            <Toaster toastOptions={{style:{fontSize:'1.5rem'}}} />
+            <div className='listNavigate flex justify-start  py-4 phone:text-xl '>
+                <div>
+                <span onClick={getAppointmentList} className={`mr-6 mx-2 p-1 text-2xl border border-gray-400  rounded-md phone:text-base sm:text-xl ${pending? 'bg-slate-400 border-gray-400 p-px text-gray-100 text-xl phone:text-sm phone:mr-4 sm:text-lg':''} hover:cursor-pointer`}>Pending Appoinments</span>
+                </div>
+                <div>
+                <span onClick={appointmentHistory} className={`mr-6 mx-2 p-1  text-2xl border border-gray-400  rounded-md phone:text-base  sm:text-xl ${!pending? 'bg-slate-400 border-gray-400 p-px text-gray-100 text-xl phone:text-sm sm:text-lg ':''} hover:cursor-pointer`}>Appoinments History</span>
+                </div>
             </div>
             <div>
-            { pending?
-                    appointList && appointList.map((appoint)=>(
-                        <div className='border border-yellow-200 text-2xl'key={appoint.appointmentId} >
-                            <ul className='flex flex-row gap-5 flex-wrap pl-4'>
+                { pending?
+                <div>{
+                    appointList && appointList.length<1?<div><h4>No items in pending appointments list</h4></div>: appointList && slicedappointList.map((appoint, index)=>(
+                        <div className='border border-yellow-200 text-2xl phone:text-base sm:text-xl' key={index} >
+                            <ul className='flex flex-row gap-5 flex-wrap pl-4 phone:gap-3'>
                                 <li className='basis-1/4 2xl:basis-1/6 capitalize'><span className='font-medium'>Patient Name</span>: {appoint.patientName}</li>
                                 <li className='basis-1/1 mr-8'><span className='font-medium '>Patient Id</span>: {appoint.patientId.slice(0,5)}</li>
                                 <li className='basis-1/8 mr-8'><span className='font-medium'>Appointment Date</span>: {appoint.appointDate}</li>
                                 <li className='basis-1/8'><span className='font-medium'>Appointment Status</span>: {appoint.approveStatus}</li>
                             </ul>
-                            <button  onClick={()=>acceptAppoint(appoint.appointmentId, appoint.patientId)} className='bg-green-600 border border-gray-700 rounded-md mx-4 my-4 px-3 hover:bg-green-400 hover:text-white'>Accept</button>
-                            <button onClick={()=>rejectAppoint(appoint.appointmentId, appoint.patientId)} className='bg-red-600 border border-gray-700 rounded-md mx-4 my-4 px-3 hover:bg-red-400 hover:text-white'>Reject</button>
+                            <button  onClick={()=>acceptAppoint(appoint.appointmentId, appoint.patientId)} className='bg-green-600 border border-gray-700 rounded-md mx-4 my-4 px-3 hover:bg-green-400 hover:text-white phone:px-1 phone:my-2 sm:px-2'>Accept</button>
+                            <button onClick={()=>rejectAppoint(appoint.appointmentId, appoint.patientId)} className='bg-red-600 border border-gray-700 rounded-md mx-4 my-4 px-3 hover:bg-red-400 hover:text-white phone:px-1.5 phone:my-2 sm:px-2.5'>Reject</button>
                         </div>
                     ))
+                    }{
+                        appointList && appointList.length>0?
+                        <Pagination dataLen={appointList.length} onPageChange={onPageChangeList}  currentPage={currentPageList} itemsPerPage={itemsPerPageList}  />
+                        :''
+                    }
+                </div>
                 :<div>
-                    { apponHistoryList && apponHistoryList.map((historyAppon) =>(
-                    <div className='border border-yellow-200 text-2xl'key={apponHistoryList.appointmentId} >
-                            <ul className='flex flex-row gap-4 flex-wrap py-2 pl-2'>
+                    { apponHistoryList && 
+                    apponHistoryList.length<1?<div><h4>No items history list</h4></div>: apponHistoryList&&
+                    slicedappointHistory.map((historyAppon) =>(
+                    <div className='border border-yellow-200 text-2xl phone:text-base sm:text-xl' key={historyAppon.appointmentId} >
+                            <ul className='flex flex-row gap-4 flex-wrap py-2 pl-2 phone:gap-3'>
                                 <li className='basis-1/4 2xl:basis-1/6 capitalize'><span className='font-medium'>Patient Name</span>: {historyAppon.patientName}</li>
                                 <li className='basis-1/1 mr-8'><span className='font-medium'>Patient Id</span>: {historyAppon.patientId.slice(0,5)}</li>
                                 <li className='basis-1/8 mr-4'><span className='font-medium'>Appointment Date</span>: {historyAppon.appointDate.slice(0,10)}</li>
                                 <li className='basis-1/8'><span className='font-medium'>Appointment Status</span>: {historyAppon.approveStatus}</li>
                             </ul>
                         </div>
-                            ))
+                        ))
+                    }
+                    {
+                     apponHistoryList && apponHistoryList.length>0?<Pagination dataLen={apponHistoryList.length} onPageChange={onPageChangeHistory}  currentPage={currentPageHistory} itemsPerPage={itemsPerPageHistory}  />:''
                     }
                 </div>
             }

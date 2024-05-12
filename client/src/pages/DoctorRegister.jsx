@@ -5,7 +5,16 @@ import Button from "../components/Button";
 import { Link, useNavigate } from 'react-router-dom';
 
 const DoctorRegister = () => {
-  const [doctorRegData, setDoctorRegData] = useState('')
+  const [doctorRegData, setDoctorRegData] = useState({
+    fullname:'',
+    email:'',
+    password:'',
+    gender:'',
+    qualification:'',
+    specialization:'',
+    experience:'',
+    fees:''
+  })
   
   const handleChange=(event)=>{
     const {name, value} = event.target
@@ -28,11 +37,17 @@ const DoctorRegister = () => {
       let result = await response.json()
       console.log("doctor res: ", result)
       if(result.status){
-        toast.success(result.message)
-        setDoctorRegData('')
-        setTimeout(()=>{
-          navigate('/doctor-login')
-        },800)
+        setDoctorRegData({
+          fullname:'',
+          email:'',
+          password:'',
+          gender:'',
+          qualification:'',
+          specialization:'',
+          experience:'',
+          fees:''
+        })
+        toast.success(result.message,{duration:4000})
       }else{
         toast.error(result.message)
       }
@@ -42,6 +57,7 @@ const DoctorRegister = () => {
     }
   }
 
+  console.log("dr: ", doctorRegData)
   const handleSubmit =(e)=>{
     e.preventDefault()
     createDocAcc()
@@ -53,7 +69,7 @@ const DoctorRegister = () => {
                 position="top-center"
                   reverseOrder={false}
           />
-          <h3 className="text-4xl font-bold py-4">Doctor Register Page</h3>
+          <h3 className="text-4xl font-bold py-4">Doctor Registration Page</h3>
           <form className=" bg-[#EEF7FF] mb-16 w-96 border border-black p-4" onSubmit={(e)=>handleSubmit(e)}>
               <Input type="text" name='fullname' value={doctorRegData.fullname} onChange={handleChange} placeholder='full name' className='nameIp bg-[#EEF7FF]' label='Name' />
               <Input type="text" name="email" value={doctorRegData.email} onChange={handleChange} placeholder='Email' className='emailIp bg-[#EEF7FF]' label='Email'  />

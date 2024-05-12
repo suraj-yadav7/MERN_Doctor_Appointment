@@ -10,10 +10,10 @@ const Profile = () => {
     <>
     <Layout>
         <div className='profile-container flex flex-col justify-center items-center h-1/2 '>
-            <h3 className='small:text-2xl'>Details</h3>
-            <div className=' flex px-6 flex-col flex-wrap justify-start items-center text-xl p-4 border w-2/4 small:w-3/4 small:text-base '>
-                <div className='capitalize'>
-                <ul >
+            <h3 className='text-3xl phone:text-2xl phone:pt-1 sm:text-2xl sm:font-medium '>Details</h3>
+            <div className=' flex px-6 flex-col flex-wrap justify-start items-center text-xl p-4 border w-2/4 phone:w-3/4 phone:border-0 sm:w-3/4'>
+                <div className='capitalize '>
+                <ul className='text-2xl phone:text-lg sm:text-xl'>
                     <li className='border border-yellow-200 py-2 px-2 '><span className='font-semibold mr-4 '>User Id: </span>{userDetails.userid?.slice(0,4)} </li>
                     <li className='py-2 border border-yellow-200 px-2'><span className='font-semibold my-6 mr-6'>Name: </span> {userDetails.name}</li>
                     <li className='border border-yellow-200 py-2 px-2'><span className='font-semibold mr-4'>Gender: </span>{userDetails.gender} </li>

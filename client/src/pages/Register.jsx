@@ -64,7 +64,7 @@ const Register = ()=>{
                  position="top-center"
                     reverseOrder={false}
             />
-                <h3 className="text-4xl font-bold py-4">Register Page</h3>
+                <h3 className="text-4xl font-bold py-4">User Register Page</h3>
                 <form className="bg-[#FCFFE0] mb-16 w-96 border border-black p-4" onSubmit={(e)=>handleSubmit(e)}>
                     <Input type="text" name='name' value={newUserData.name} onChange={handleChange} placeholder='Username' className='nameIp my-2 bg-[#FCFFE0]' label='Name' />
                     <Input type="text" name="email" value={newUserData.email} onChange={handleChange} placeholder='Email' className='emailIp my-2 bg-[#FCFFE0]' label='Email'  />

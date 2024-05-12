@@ -50,7 +50,7 @@ const Login = ()=>{
         <>
             <div className="bg-[#E2F4C5] w-full h-screen flex flex-col justify-center items-center text-lg">
                 <Toaster />
-                <h3 className="text-4xl font-bold py-4">Login</h3>
+                <h3 className="text-4xl font-bold py-4">User Login</h3>
                 <form className="bg-[#FCFFE0] mb-16 w-96 border border-black p-4" onSubmit={(e)=>handleSubmit(e)}>
                     <Input type="text" name='email' value={loginData.email} onChange={handleChange} placeholder='Email' className='emailIp mb-4 bg-[#FCFFE0]' label='Email'  />
                     <Input type="password" name='password' value={loginData.password} onChange={handleChange} placeholder='Password' className='passwordIp mb-2 bg-[#FCFFE0]' label='Password' />

@@ -52,21 +52,21 @@ const Layout = ({children}) => {
                     </div>
                 </div>
                 <div className="content">
-                    <div className="header">
-                        <div className='dashboardInfo text-2xl '>
+                    <div className="header ">
+                        <div className='dashboardInfo '>
                             {
                                 isDoctor?<h3>Doctor Dashboard</h3>:isAdmin?<h3>Admin Dashboard</h3>:<h3>User Dashboard</h3>
                             }
                         </div>
                         <div className='user'>
-                            <p className='capitalize'>{user.name &&(user.name)}</p>
+                            <p className='capitalize '>{user.name &&(user.name)}</p>
                         </div>
                     </div>
                     <div className="body">
                         <div className='body-child'>
                             {children}
                         </div>
-                        </div>
+                    </div>
                 </div>
             </div>
         </div>
