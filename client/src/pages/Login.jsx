@@ -48,13 +48,13 @@ const Login = ()=>{
 
     return (
         <>
-            <div className="bg-[#E2F4C5] w-full h-screen flex flex-col justify-center items-center text-lg">
+            <div className="bg-[#E2F4C5] w-full h-screen flex flex-col justify-center items-center flex-wrap text-xl phone:text-base ">
                 <Toaster />
-                <h3 className="text-4xl font-bold py-4">User Login</h3>
-                <form className="bg-[#FCFFE0] mb-16 w-96 border border-black p-4" onSubmit={(e)=>handleSubmit(e)}>
+                <h3 className="text-3xl font-bold py-4 phone:text-xl sm:text-2xl">User Login</h3>
+                <form className="bg-[#FCFFE0] mb-16 w-96 border border-black p-4 text-lg phone:text-base sm:text-base phone:w-72" onSubmit={(e)=>handleSubmit(e)}>
                     <Input type="text" name='email' value={loginData.email} onChange={handleChange} placeholder='Email' className='emailIp mb-4 bg-[#FCFFE0]' label='Email'  />
                     <Input type="password" name='password' value={loginData.password} onChange={handleChange} placeholder='Password' className='passwordIp mb-2 bg-[#FCFFE0]' label='Password' />
-                    <Button className="my-3 bg-[#a5d29a] border border-gray-400 hover:bg-[#aae09c] hover:border-gray-100 " type="submit">Login</Button>
+                    <Button className="my-3 bg-[#a5d29a] border border-gray-400 hover:bg-[#aae09c] hover:border-gray-100 phone:p-1.5" type="submit">Login</Button>
                         <p className="py-1">Don't have account,<Link to='/register'><span className=" text-blue-600 underline">create here</span></Link></p>
                         <p>Login as a <Link to ='/doctor-login' ><span className="text-blue-600 underline">Doctor</span></Link></p>
                 </form>

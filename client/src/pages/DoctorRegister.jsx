@@ -31,7 +31,7 @@ const DoctorRegister = () => {
         headers:{
           'Content-Type':'application/json'
         },
-        body:JSON.stringify({fullname:doctorRegData.fullname,email:doctorRegData.email,password:doctorRegData.password, gender:doctorRegData.gender, qualification:doctorRegData.qualification,specialization:doctorRegData.specialization,experience:doctorRegData.experience, fees:doctorRegData.fees})
+        body:JSON.stringify({fullname:doctorRegData.fullname.trim(),email:doctorRegData.email,password:doctorRegData.password, gender:doctorRegData.gender, qualification:doctorRegData.qualification,specialization:doctorRegData.specialization.trim(),experience:doctorRegData.experience, fees:doctorRegData.fees})
         
       })
       let result = await response.json()
@@ -64,13 +64,13 @@ const DoctorRegister = () => {
   }
   return (
     <>
-      <div className="bg-[#CDE8E5] w-full h-screen flex flex-col justify-center items-center text-lg">
+      <div className="bg-[#CDE8E5] w-full  flex flex-col justify-center items-center text-xl phone:text-base">
           <Toaster
                 position="top-center"
                   reverseOrder={false}
           />
-          <h3 className="text-4xl font-bold py-4">Doctor Registration Page</h3>
-          <form className=" bg-[#EEF7FF] mb-16 w-96 border border-black p-4" onSubmit={(e)=>handleSubmit(e)}>
+          <h3 className="text-3xl font-bold py-4 phone:text-xl sm:text-2xl">Doctor Registration Page</h3>
+          <form className=" bg-[#EEF7FF] mb-16 w-96 border border-black p-4 text-lg phone:text-base sm:text-base phone:w-72" onSubmit={(e)=>handleSubmit(e)}>
               <Input type="text" name='fullname' value={doctorRegData.fullname} onChange={handleChange} placeholder='full name' className='nameIp bg-[#EEF7FF]' label='Name' />
               <Input type="text" name="email" value={doctorRegData.email} onChange={handleChange} placeholder='Email' className='emailIp bg-[#EEF7FF]' label='Email'  />
               <Input type="password" name="password" value={doctorRegData.password} onChange={handleChange} placeholder='Password' className='passwordIp bg-[#EEF7FF]' label='Password' />
@@ -93,7 +93,7 @@ const DoctorRegister = () => {
               <Input type='text' name='specialization' value={doctorRegData.specialization} placeholder='specialization' onChange={handleChange} label='Specialization' className='bg-[#EEF7FF]'/>
               <Input type='number' name='experience' value={doctorRegData.experience} placeholder='exp' onChange={handleChange} label='Experience'className='bg-[#EEF7FF]' />
               <Input type='number' name='fees' value={doctorRegData.fees} placeholder='fees' min='100' max='1200' maxLength='4' onChange={handleChange} label='Fees' className='bg-[#EEF7FF]' />
-              <Button className="my-2 bg-[#85c2ba] hover:bg-[#a3e5dd]" type="submit">Register</Button>
+              <Button className="my-2 bg-[#85c2ba] hover:bg-[#a3e5dd] phone:p-1.5" type="submit">Register</Button>
               <p className=" py-2">Already a sign up, <Link to='/doctor-login'><span className="text-blue-600 underline">Login here</span></Link></p>
             </form>
       </div>

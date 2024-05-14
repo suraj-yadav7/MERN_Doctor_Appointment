@@ -108,7 +108,7 @@ const handleBookAppointment = async(drData)=>{
     }
   }
   else{
-  toast.custom(<div className='border-2 p-1  border-blue-400 rounded-md text-2xl'>Please select Appointment date first.</div>)
+  toast.custom(<div className='border-2 p-1 bg-white shadow-md  shadow-gray-300  border-blue-400 rounded-md text-2xl phone:text-base sm:text-lg'>Please select Appointment date first.</div>)
   }
 };
 
@@ -129,40 +129,55 @@ useEffect(()=>{
     }
   },[]);
 
+  const customToastStyle = {
+    // backgroundColor: '#3498db',
+    padding: '20px',
+    color: 'green',
+    textAlign: 'center',
+  
+  };
+
+  const style = {
+ 
+    // Adding media query..
+    '@media (max-width: 500px)': {
+      color: 'red',
+    },
+  };
   return (
     <>
     <Layout>
       {
         admin? <DoctorList />: doctor? <Appointments/> :
-      <div>
-        <Toaster toastOptions={{style:{fontSize:'1.5rem'}}} />
-        <h2 className='text-3xl py-2'>Book Your Appointment</h2>
-        <h5 className='text-2xl py-1'>Our Well Qualified Doctors</h5>
-        <div className='drMainContainer justify-center items-center text-2xl flex flex-wrap gap-10 border border-red-100'>
+      <div className=''>
+        <Toaster   toastOptions={{style:{fontSize:'1.3rem' }}} />
+        <h2 className='text-3xl py-2 phone:text-xl sm:text-2xl'>Book Your Appointment</h2>
+        <h5 className='text-2xl py-1 phone:text-lg sm:text-xl'>Our Well Qualified Doctors</h5>
+        <div className='drMainContainer justify-center items-center text-2xl flex flex-wrap gap-10 border border-red-100 '>
           {drList && drList.length>1?drList&& slicedDrList.map((dr)=>(
 
-            <div className='drCard border flex justify-center items-center border-gray-800 p-3 capitalize w-1/4' key={dr.drId}>
+            <div className='drCard border flex justify-center items-center border-gray-800 p-3 capitalize min-h-64 phone:text-lg sm:text-xl 2xl:w-1/4 ' key=  {dr.drId}>
               <div>
-              <p>Doctor Name: {dr.drName}</p>
-              <p>Specialist: {dr.specialization}</p>
-              <p>Doctor Fees: {dr.fees}</p>
-              <p>Available 10am to 2pm</p>
-              <div>
-              <DatePicker className='border border-gray-500 w-50 text-xl'
-                selected={drID==dr.drId?selectedDate:''}
-                onChange={(date)=>handleDateChange(date,dr.drId)}
-                showTimeSelect
-                timeFormat="HH:mm"
-                timeIntervals={30}
-                dateFormat="MMMM d, yyyy h:mm aa"
-                timeCaption="Time"
-                placeholderText="Select date and time"
-                minTime={startTime}
-                maxTime={endTime} />
-              <span><i className="fa-regular fa-calendar-days ml-2"></i></span>
-              </div>
-            <button onClick={()=> handleBookAppointment(dr)} className='border border-gray-600 rounded-md my-2 mt-4 px-1 bg-[#7ABA78] text-white hover:bg-[#8ddd8b] hover:text-white'>Book Now</button>
-          </div>  
+                <p style={style}>Doctor Name: {dr.drName.split(' ')[0]}</p>
+                <p>Specialist: {dr.specialization.split(' ')[0]}</p>
+                <p>Doctor Fees: {dr.fees}</p>
+                <p>Available 10am to 2pm</p>
+                <div>
+                <DatePicker className='border border-gray-500 w-50 text-xl phone:w-44'
+                  selected={drID==dr.drId?selectedDate:''}
+                  onChange={(date)=>handleDateChange(date,dr.drId)}
+                  showTimeSelect
+                  timeFormat="HH:mm"
+                  timeIntervals={30}
+                  dateFormat="MMMM d, yyyy h:mm aa"
+                  timeCaption="Time"
+                  placeholderText="Select date and time"
+                  minTime={startTime}
+                  maxTime={endTime} />
+                  <span><i className="fa-regular fa-calendar-days ml-2"></i></span>
+                </div>
+                <button button onClick={()=> handleBookAppointment(dr)} className='border border-gray-600 rounded-md my-2 mt-4 px-1 bg-[#7ABA78] text-white hover:bg-[#8ddd8b] hover:text-white'>Book Now</button>
+            </div>  
           </div>
           )) :<div><h4>Fething Doctor List.... </h4></div>}
         </div>

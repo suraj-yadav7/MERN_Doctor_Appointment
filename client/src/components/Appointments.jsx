@@ -60,7 +60,7 @@ const Appointments = () => {
         let result = await response.json()
         console.log("response: ", result)
         if(result.status){
-            toast.custom(<div className='border-2 border-red-300 rounded-md text-2xl p-1'>{result.message}</div>)
+            toast.custom(<div className='border-2 border-red-300 rounded-md text-2xl p-1 bg-white shadow-md shadow-gray-300 phone:text-base sm:text-lg'>{result.message}</div>)
             setAppointList((prev) => prev.filter((elem)=> elem.appointmentId != result.appointmentid))
         }
     }
@@ -93,7 +93,7 @@ const Appointments = () => {
   return (
     <>
         <div className='appointment-container'>
-            <Toaster toastOptions={{style:{fontSize:'1.5rem'}}} />
+            <Toaster toastOptions={{style:{fontSize:'1.3rem'}}} />
             <div className='listNavigate flex justify-start  py-4 phone:text-xl '>
                 <div>
                 <span onClick={getAppointmentList} className={`mr-6 mx-2 p-1 text-2xl border border-gray-400  rounded-md phone:text-base sm:text-xl ${pending? 'bg-slate-400 border-gray-400 p-px text-gray-100 text-xl phone:text-sm phone:mr-4 sm:text-lg':''} hover:cursor-pointer`}>Pending Appoinments</span>

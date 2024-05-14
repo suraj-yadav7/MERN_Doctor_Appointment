@@ -9,7 +9,7 @@ export default {
       'md': '881px',
       'lg': '1024px',
       'xl': '1280px',
-      '2xl':'1540px',
+      '2xl':'1440px',
       'phone': { 'raw': '(max-width: 440px)' },
     },
   },

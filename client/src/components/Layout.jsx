@@ -31,23 +31,40 @@ const Layout = ({children}) => {
             <div className="layout">
                 <div className="sidebar">
                     <div className="logo">
-                        <h6>DR Appointment</h6>
+                        <h6 className='phone:hidden sm:text-lg'>Doctor Appointment</h6>
+                        <h6 className='hidden phone:inline'>DR</h6>
                         <hr/></div>
-                    <div className="menu">Menu
+                    <div className="menu phone:hidden">Menu
                     {
                         sidebarData.map((elem,index)=>{
                             const isActive = location.pathname === elem.path
                             return (
-                                <div key={index} className={`menu-item ${isActive? 'active':''}`}>
-                                    <i className={elem.icon} />
-                                    <Link to={elem.path}>{elem.name}</Link>
+                                <div  key={index} className={` menu-item ${isActive? 'active':''}`}>
+                                   <Link className='sm:text-base'  to={elem.path}> <i className={elem.icon} />
+                                    {elem.name}</Link>
                                 </div>
                             )
                         })
                     }
                         <div className={`menu-item hover:text-red-500`} onClick={handleLogout}>
                                 <i className='fa-solid fa-right-from-bracket ' />
-                                Logout
+                                <span className='sm:text-base'>Logout</span>
+                        </div>
+                    </div>
+                    {/* It will be only visible till 440px (Phone)*/}
+                    <div className="menu  hidden phone:block">
+                    {
+                        sidebarData.map((elem,index)=>{
+                            const isActive = location.pathname === elem.path
+                            return (
+                                <div  key={index} className={` menu-item ${isActive? 'active':''}`}>
+                                    <Link to={elem.path}><i className={elem.icon} /></Link> 
+                                </div>
+                            )
+                        })
+                    }
+                        <div className={`menu-item hover:text-red-500`} onClick={handleLogout}>
+                                <i className='fa-solid fa-right-from-bracket ' />
                         </div>
                     </div>
                 </div>

@@ -48,13 +48,13 @@ const DoctorLogin = ()=>{
 
     return (
         <>
-            <div className=" bg-[#CDE8E5] w-full h-screen flex flex-col justify-center items-center text-lg">
+            <div className=" bg-[#CDE8E5] w-full h-screen flex flex-col justify-center items-center text-xl phone:text-base ">
                 <Toaster />
-                <h3 className=" text-4xl font-bold py-4">Doctor's Login</h3>
-                <form className="bg-[#EEF7FF] mb-16 w-96 border border-black p-4" onSubmit={(e)=>handleSubmit(e)}>
+                <h3 className=" text-3xl font-bold py-4 phone:text-xl sm:text-2xl ">Doctor's Login</h3>
+                <form className="bg-[#EEF7FF] mb-16 w-96 border border-black p-4 text-lg phone:text-base sm:text-base phone:w-72" onSubmit={(e)=>handleSubmit(e)}>
                     <Input type="text" name='email' value={drLogin.email} onChange={handleChange} placeholder='Email' className='emailIp mb-4 bg-[#EEF7FF]' label='Email' />
                     <Input type="password" name='password' value={drLogin.password} onChange={handleChange} placeholder='Password' className='passwordIp mb-2 bg-[#EEF7FF]' label='Password' />
-                    <Button className="my-3 border border-gray-400 bg-[#8bc2c2] hover:bg-[#9be7e7]" type="submit">Login</Button>
+                    <Button className="my-3 border border-gray-400 bg-[#8bc2c2] hover:bg-[#9be7e7] phone:p-1.5" type="submit">Login</Button>
                         <p className="py-1">Don't have doctor account, <Link to='/doctor-register'><span className=" text-blue-600 underline">create one</span></Link></p>
                         <p className=" py-2">Login as user, <Link to='/login'><span className="text-blue-600 underline">Login here</span></Link></p>
                 </form>

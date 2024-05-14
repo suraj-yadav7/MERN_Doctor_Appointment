@@ -44,11 +44,11 @@ body('fees').exists().isNumeric({min:200, max:100})], async(req,res)=>{
                     notification.push({type:'doctor',message:`${createDoctor.fullname} has applied for doctor.`,data:{doctorid:doctorId, doctorName:createDoctor.fullname, doctorExp:createDoctor.experience, doctorSpecialization:createDoctor.specialization}});
                     let adminId=adminExist._id.valueOf();
                     await UserRegister.findByIdAndUpdate(adminId,{isNotification:notification});
-                    return res.status(200).json({status:true, message:"Doctor profile is created pending at admin"});
+                    return res.status(200).json({status:true, message:"Doctor profile is created pending at admin for Approval"});
                 }
             }
             else{
-                return res.status(400).json({status:false,message:"User Already Exist"})
+                return res.status(400).json({status:false,message:"User Already Exist!"})
             }
         }
         catch(error){

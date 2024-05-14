@@ -51,7 +51,7 @@ const DoctorList = ()=>{
             toast.success(result.message)
             getDoctorList()
         }
-        console.log("admin response: ", result)
+        console.log("admin response: ", result);
     };
 
     const rejectDrProfile = async (doctorId)=>{
@@ -65,7 +65,7 @@ const DoctorList = ()=>{
         let result = await response.json()
         console.log("reject response: ", result)
         if(result.status){
-            toast.custom(<div className='border-2 border-red-300 rounded-md text-2xl p-1'>{result.message}</div>)
+            toast.custom(<div className='border-2 border-red-300 rounded-md text-2xl p-1 bg-white shadow-md shadow-gray-300 phone:text-base sm:text-lg'>{result.message}</div>)
             getDoctorList()
         }
     };

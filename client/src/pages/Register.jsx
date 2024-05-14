@@ -59,13 +59,13 @@ const Register = ()=>{
     
     return (
         <>
-            <div className=" bg-[#E2F4C5] w-full h-screen flex flex-col justify-center items-center text-lg">
+            <div className=" bg-[#E2F4C5] w-full h-screen flex flex-col justify-center items-center text-xl phone:text-base">
             <Toaster
                  position="top-center"
                     reverseOrder={false}
             />
-                <h3 className="text-4xl font-bold py-4">User Register Page</h3>
-                <form className="bg-[#FCFFE0] mb-16 w-96 border border-black p-4" onSubmit={(e)=>handleSubmit(e)}>
+                <h3 className="text-3xl font-bold py-4 phone:text-xl sm:text-2xl">User Register Page</h3>
+                <form className="bg-[#FCFFE0] mb-16 w-96 border border-black p-4 text-lg phone:text-base sm:text-base phone:w-72" onSubmit={(e)=>handleSubmit(e)}>
                     <Input type="text" name='name' value={newUserData.name} onChange={handleChange} placeholder='Username' className='nameIp my-2 bg-[#FCFFE0]' label='Name' />
                     <Input type="text" name="email" value={newUserData.email} onChange={handleChange} placeholder='Email' className='emailIp my-2 bg-[#FCFFE0]' label='Email'  />
                     <div className='genderIp my-2'>
@@ -76,7 +76,7 @@ const Register = ()=>{
                         <input type='radio' name='gender' value='female' onChange={handleChange} id='4' />
                     </div>
                     <Input type="password" name="password" value={newUserData.password} onChange={handleChange} placeholder='Password' className='passwordIp my-2 bg-[#FCFFE0]' label='Password' />
-                    <Button className="my-2 bg-[#a5d39b] hover:bg-[#bbebb1] hover:border-gray-100" type="submit">Register</Button>
+                    <Button className="my-2 bg-[#a5d39b] hover:bg-[#bbebb1] hover:border-gray-100 phone:p-1.5" type="submit">Register</Button>
                     <p className=" py-2">Already a user, <Link to='/login'><span className="text-blue-600 underline">Login here</span></Link></p>
                 </form>
             </div>
