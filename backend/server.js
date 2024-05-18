@@ -14,7 +14,7 @@ const app = express()
 
 dotenv.config()
 const port = process.env.PORT || 8080
-const mongoURI = process.env.MONGO_URI
+const client_url = process.env.CLIENT_URL
 // Connection mongodb
 connectDB();
 
@@ -31,7 +31,7 @@ app.use(express.json())
 app.use(morgan('dev'));
 
 const corsOption={
-    origin:'http://localhost:5173',
+    origin:client_url,
     methods:['GET',"POST"],
     credentials:true,
     optionSuccessStatus:200
@@ -44,8 +44,8 @@ app.use('/api', userRouter);
 // api for doctor registration and login
 app.use('/api', doctorRouter)
 
+// Dr account and appointments approval
 app.use('/api', AppAccApproval)
-
 
 // api for authorization of user and getting user data
 app.use('/api', authorizationUser, userDataRouter);

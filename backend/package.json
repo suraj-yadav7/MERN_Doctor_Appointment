@@ -1,15 +1,12 @@
 {
-  "name": "hospitalmanagement",
+  "name": "doctor-appointment-management",
   "version": "1.0.0",
-  "description": "This is backend of hospital management",
+  "description": "This is backend of doctor appointment management",
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "server": "nodemon server.js",
-    "client": "npm start --prefix, /client",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "build":"npm install"
   },
   "author": "suraj",
   "license": "ISC",

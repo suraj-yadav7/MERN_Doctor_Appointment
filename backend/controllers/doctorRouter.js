@@ -93,10 +93,9 @@ doctorRouter.post('/doctor-login',[
     let error = validationResult(req)
     if(error.isEmpty()){
     let email = req.body.email
-    let doctorExist = await DoctorRegistration.findOne({email})
-    console.log("Dr: ", doctorExist)
-    if(doctorExist.approveStatus!=='Pending'){
-        if(doctorExist){
+    let doctorExist = await DoctorRegistration.findOne({email});
+    if(doctorExist){
+        if(doctorExist.approveStatus ==='Approved'){
             let comparePw= await bcrypt.compare(req.body.password,doctorExist.password)
             if(comparePw){
                 let jwtsign = process.env.JWTSECRET
@@ -108,12 +107,15 @@ doctorRouter.post('/doctor-login',[
                 return res.status(400).json({status:false, message:'Password is Incorrect'})
             }
         }
+        else if(doctorExist.approveStatus =='Rejected'){
+            return res.status(400).json({status:false, message:'Your account is Rejected'})
+        }
         else{
-            return res.status(404).json({status:false, message:"User don't exist, Register"})
+            return res.status(404).json({status:false, message:"Your account approval pending at admin"})
             }
     }
     else{
-        return res.status(400).json({status:false, message:'Admin Approval Needed'})
+        return res.status(400).json({status:false, message:"User don't exist, Register"})
     }
     }
 else{
