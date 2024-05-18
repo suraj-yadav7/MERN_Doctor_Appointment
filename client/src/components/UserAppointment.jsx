@@ -46,7 +46,7 @@ const UserAppointment = () => {
                             <li className='basis-1/6'><span className='font-medium'>Problem</span>: {userAppoint.healthissueDept}</li>
                             <li className='basis-1/8 mr-8'><span className='font-medium'>Fees</span>: {userAppoint.doctorFees}</li>
                             <li className='basis-1/8 mr-6'><span className='font-medium'>Appointment Date</span>: {userAppoint.appointDate.slice(0,10)}</li>
-                            <li className='basis-1/8'><span className='font-medium'>Appointment Status</span>: {userAppoint.approveStatus}</li>
+                            <li className='basis-1/8'><span className='font-medium'>Appointment Status: </span><span  className={` ${userAppoint.approveStatus==='Pending'?'text-yellow-500':userAppoint.approveStatus==='Accepted'?'text-green-500':userAppoint.approveStatus==='Rejected'?'text-red-500':''}`}>{userAppoint.approveStatus}</span></li>
                         </ul>
                     </div>
                     ))

@@ -41,7 +41,7 @@ const DoctorRegister = () => {
           fullname:'',
           email:'',
           password:'',
-          gender:'',
+          gender:'male',
           qualification:'',
           specialization:'',
           experience:'',

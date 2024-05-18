@@ -90,6 +90,7 @@ const DoctorList = ()=>{
     }
     const slicedDrApprovedList = drApprovedList.slice(startIndexApproved, endIndexApproved)
 
+    console.log("pending dr: ", drPendingList)
     useEffect(()=>{
         getDoctorList()
     },[]);
@@ -140,6 +141,7 @@ const DoctorList = ()=>{
                                                 <li>DoctorName: {elem.data.doctorName}</li>
                                                 <li>Doctor Specialization: {elem.data.doctorSpecialization}</li>
                                                 <li>DoctorExp: {elem.data.doctorExp}</li>
+                                                <li>Doctor Status: <span className={` ${elem.data.approveStatus==='Pending'?'text-yellow-500':elem.data.approveStatus==='Accepted'?'text-green-500':elem.data.approveStatus==='Rejected'?'text-red-500':''}`}>{elem.data.approveStatus}</span></li>
                                             </ul>
                                         </div>
                                         )

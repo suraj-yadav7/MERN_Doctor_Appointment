@@ -48,5 +48,5 @@ app.use('/api', AppAccApproval)
 
 
 // api for authorization of user and getting user data
-app.use('/api', authorizationUser, userDataRouter)
+app.use('/api', authorizationUser, userDataRouter);
 

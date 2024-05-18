@@ -19,10 +19,11 @@ AppAccApproval.post('/account-approval', async(req, res)=>{
                     let notification = adminExist.isNotification
                     let seenNotific =adminExist.seenNotification
                     let index = notification.findIndex((doctor)=> doctor.data.doctorid == id)
-                    seenNotific.push(notification[index])
-                    let updateNotification = notification.splice(index,1)
+                    let splicedNotification = notification.splice(index,1)
+                    splicedNotification[0].data.approveStatus='Accepted'
+                    seenNotific.push(splicedNotification[0]);
                     await UserRegister.findByIdAndUpdate(adminExist._id.valueOf(), {isNotification:notification, seenNotification:seenNotific})
-                    return res.status(200).json({status:true, message:'Doctor Profile Approved'})
+                    return res.status(200).json({status:true, message:'Doctor Profile Approved'});
                 }
             }
         }
@@ -42,16 +43,17 @@ AppAccApproval.post('/account-approval', async(req, res)=>{
         try{
             let doctorExist = await DoctorRegistration.findById(doctorId);
             if(doctorExist){
-                let response = await DoctorRegistration.findByIdAndUpdate(doctorId, {approveStatus:"Rejected"})
+                let response = await DoctorRegistration.findByIdAndUpdate(doctorId, {approveStatus:"Rejected"});
             if(response){
                 let adminExist = await UserRegister.findOne({isAdmin:true})
                 if(adminExist){
                     let notific = adminExist.isNotification
                     let seenNotific = adminExist.seenNotification
                     let index = notific.findIndex((elem)=> elem.data.doctorid == doctorId)
-                    seenNotific.push(notific[index])
-                    notific.splice(index, 1)
-                    await UserRegister.findByIdAndUpdate(adminExist._id.valueOf(), {isNotification:notific, seenNotification:seenNotific})
+                    let splicedNotific = notific.splice(index, 1)
+                    splicedNotific[0].data.approveStatus='Rejected'
+                    seenNotific.push(splicedNotific[0])
+                    await UserRegister.findByIdAndUpdate(adminExist._id.valueOf(), {isNotification:notific, seenNotification:seenNotific});
                     res.status(200).json({status:true, message:"Doctor Profile is Rejected"})
                 }
             }
@@ -62,7 +64,7 @@ AppAccApproval.post('/account-approval', async(req, res)=>{
     }
     catch(error){
         console.log("Error occured while rejecting doctor ", error)
-        res.status(400).json({status:false, mesaage:'Error at rejecting doctor profile'})
+        res.status(400).json({status:false, mesaage:'Error at rejecting doctor profile'});
     }
     });
 
@@ -89,7 +91,7 @@ AppAccApproval.post('/doctor-appointment', async(req, res)=>{
             // Inserting appointment list in doctor collection
             let appointId=appointment._id.valueOf()
 
-            let doctorExist = await DoctorRegistration.findById(doctorId)
+            let doctorExist = await DoctorRegistration.findById(doctorId);
             if(doctorExist){
             let pendingAppont=doctorExist.appoinmentsPending
             let pendingAppointData = {
@@ -101,7 +103,7 @@ AppAccApproval.post('/doctor-appointment', async(req, res)=>{
             }
             pendingAppont.push(pendingAppointData)
             
-            await DoctorRegistration.findByIdAndUpdate(doctorId, {appoinmentsPending:pendingAppont})
+            await DoctorRegistration.findByIdAndUpdate(doctorId, {appoinmentsPending:pendingAppont});
         }
         
         // Inserting appointmnet in user(patient) collection
@@ -130,7 +132,6 @@ AppAccApproval.post('/doctor-appointment', async(req, res)=>{
         console.log("error while updating appointment data: ", error)
         return res.status(400).json({status:400, message:'Error at adding appointment data'});
     }
-        
     });
 
 

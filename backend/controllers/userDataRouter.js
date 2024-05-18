@@ -4,7 +4,6 @@ import {DoctorRegistration} from '../models/doctor.model.js'
 const userDataRouter = express.Router()
 
 userDataRouter.post('/getUserData',async (req,res)=>{
-    console.log("id's: ", req.headers)
     try{
         let userId=req.headers['userid']
         let doctorId=req.headers['doctorid']

@@ -35,13 +35,11 @@ body('fees').exists().isNumeric({min:200, max:100})], async(req,res)=>{
                     fees:req.body.fees
                 })
                 await createDoctor.save()
-                console.log("docot reg: ", createDoctor)
                 let adminExist = await UserRegister.findOne({isAdmin:true})
-                console.log("admin exist: ", adminExist)
                 if(adminExist && createDoctor){
                     let notification =adminExist.isNotification;
                     let doctorId=createDoctor._id.valueOf()
-                    notification.push({type:'doctor',message:`${createDoctor.fullname} has applied for doctor.`,data:{doctorid:doctorId, doctorName:createDoctor.fullname, doctorExp:createDoctor.experience, doctorSpecialization:createDoctor.specialization}});
+                    notification.push({type:'doctor',message:`${createDoctor.fullname} has applied for doctor.`,data:{doctorid:doctorId, doctorName:createDoctor.fullname, doctorExp:createDoctor.experience, doctorSpecialization:createDoctor.specialization, approveStatus:createDoctor.approveStatus}});
                     let adminId=adminExist._id.valueOf();
                     await UserRegister.findByIdAndUpdate(adminId,{isNotification:notification});
                     return res.status(200).json({status:true, message:"Doctor profile is created pending at admin for Approval"});

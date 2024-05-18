@@ -26,7 +26,7 @@ const Home = () => {
   
   const dispatch = useDispatch();
 
-// Authenticate all user and trasmit their data in store
+// Authenticate all user and send their data in store
 const authUser=async()=>{
   try{
     let response = await fetch('http://localhost:5000/api/getUserData',{
@@ -99,6 +99,7 @@ const handleBookAppointment = async(drData)=>{
       console.log("appointment booking: ", result)
       if(result.status){
         toast.success(result.message)
+        setSelectedDate(null)
       }
       else{
         toast.error(result.message)
@@ -129,21 +130,7 @@ useEffect(()=>{
     }
   },[]);
 
-  const customToastStyle = {
-    // backgroundColor: '#3498db',
-    padding: '20px',
-    color: 'green',
-    textAlign: 'center',
-  
-  };
 
-  const style = {
- 
-    // Adding media query..
-    '@media (max-width: 500px)': {
-      color: 'red',
-    },
-  };
   return (
     <>
     <Layout>
@@ -158,7 +145,7 @@ useEffect(()=>{
 
             <div className='drCard border flex justify-center items-center border-gray-800 p-3 capitalize min-h-64 phone:text-lg sm:text-xl 2xl:w-1/4 ' key=  {dr.drId}>
               <div>
-                <p style={style}>Doctor Name: {dr.drName.split(' ')[0]}</p>
+                <p>Doctor Name: {dr.drName.split(' ')[0]}</p>
                 <p>Specialist: {dr.specialization.split(' ')[0]}</p>
                 <p>Doctor Fees: {dr.fees}</p>
                 <p>Available 10am to 2pm</p>

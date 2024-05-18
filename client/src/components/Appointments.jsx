@@ -31,7 +31,7 @@ const Appointments = () => {
         })
         let result = await response.json()
         setApponHistoryList(result.data)
-    }
+    };
 
     const acceptAppoint = async (appointmentId, patientId)=>{
         let response = await fetch('http://localhost:5000/api/accept-appointment',{
@@ -47,7 +47,7 @@ const Appointments = () => {
             toast.success(result.message)
             setAppointList((prev) => prev.filter((elem)=> elem.appointmentId != result.appointmentid))
         }
-    }
+    };
 
     const rejectAppoint = async (appointmentId, patientId)=>{
         let response = await fetch('http://localhost:5000/api/reject-appointment',{
@@ -63,7 +63,7 @@ const Appointments = () => {
             toast.custom(<div className='border-2 border-red-300 rounded-md text-2xl p-1 bg-white shadow-md shadow-gray-300 phone:text-base sm:text-lg'>{result.message}</div>)
             setAppointList((prev) => prev.filter((elem)=> elem.appointmentId != result.appointmentid))
         }
-    }
+    };
     // Pagination for pending appointment list
     const [currentPageList, setCurrentPageList] =useState(1)
     const itemsPerPageList = 4
@@ -71,7 +71,7 @@ const Appointments = () => {
     const endIndexList = startIndexList+itemsPerPageList
     const onPageChangeList = (page)=>{
         setCurrentPageList(page)
-    }
+    };
     const slicedappointList = appointList.slice(startIndexList, endIndexList)
 
     // Pagination Appointmen History list
@@ -90,6 +90,7 @@ const Appointments = () => {
         getAppointmentList()
     },[]);
 
+    console.log("approve status: ",apponHistoryList )
   return (
     <>
         <div className='appointment-container'>
@@ -111,7 +112,7 @@ const Appointments = () => {
                                 <li className='basis-1/4 2xl:basis-1/6 capitalize'><span className='font-medium'>Patient Name</span>: {appoint.patientName}</li>
                                 <li className='basis-1/1 mr-8'><span className='font-medium '>Patient Id</span>: {appoint.patientId.slice(0,5)}</li>
                                 <li className='basis-1/8 mr-8'><span className='font-medium'>Appointment Date</span>: {appoint.appointDate}</li>
-                                <li className='basis-1/8'><span className='font-medium'>Appointment Status</span>: {appoint.approveStatus}</li>
+                                <li className='basis-1/8'><span className='font-medium'>Appointment Status: </span><span className={` ${appoint.approveStatus==='Pending'?'text-yellow-500':appoint.approveStatus==='Accepted'?'text-green-500':appoint.approveStatus==='Rejected'?'text-red-500':''}`}>{appoint.approveStatus}</span> </li>
                             </ul>
                             <button  onClick={()=>acceptAppoint(appoint.appointmentId, appoint.patientId)} className='bg-green-600 border border-gray-700 rounded-md mx-4 my-4 px-3 hover:bg-green-400 hover:text-white phone:px-1 phone:my-2 sm:px-2'>Accept</button>
                             <button onClick={()=>rejectAppoint(appoint.appointmentId, appoint.patientId)} className='bg-red-600 border border-gray-700 rounded-md mx-4 my-4 px-3 hover:bg-red-400 hover:text-white phone:px-1.5 phone:my-2 sm:px-2.5'>Reject</button>
@@ -132,7 +133,7 @@ const Appointments = () => {
                                 <li className='basis-1/4 2xl:basis-1/6 capitalize'><span className='font-medium'>Patient Name</span>: {historyAppon.patientName}</li>
                                 <li className='basis-1/1 mr-8'><span className='font-medium'>Patient Id</span>: {historyAppon.patientId.slice(0,5)}</li>
                                 <li className='basis-1/8 mr-4'><span className='font-medium'>Appointment Date</span>: {historyAppon.appointDate.slice(0,10)}</li>
-                                <li className='basis-1/8'><span className='font-medium'>Appointment Status</span>: {historyAppon.approveStatus}</li>
+                                <li className='basis-1/8'><span className='font-medium'>Appointment Status: </span> <span className={` ${historyAppon.approveStatus==='Pending'?'text-yellow-500':historyAppon.approveStatus==='Accepted'?'text-green-500':historyAppon.approveStatus==='Rejected'?'text-red-500':''}`}>{historyAppon.approveStatus}</span></li>
                             </ul>
                         </div>
                         ))
