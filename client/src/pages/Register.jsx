@@ -13,6 +13,11 @@ const Register = ()=>{
         gender:''
     })
     const navigate =useNavigate()
+<<<<<<< Updated upstream
+=======
+    const base_url = import.meta.env.VITE_BASE_URL
+
+>>>>>>> Stashed changes
 
     const handleChange=(e)=>{
         const {name, value}=e.target
@@ -26,7 +31,11 @@ const Register = ()=>{
 
     async function postUserData(data){
         try{
+<<<<<<< Updated upstream
             let postResponse = await fetch("http://localhost:5000/api/create-user",
+=======
+            let postResponse = await fetch(`${base_url}/api/create-user`,
+>>>>>>> Stashed changes
             {
                 method:'POST',
                 headers:{

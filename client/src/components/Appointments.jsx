@@ -7,9 +7,17 @@ const Appointments = () => {
     const [apponHistoryList, setApponHistoryList] = useState('')
     const [pending, setPending] = useState(true)
 
+<<<<<<< Updated upstream
     const getAppointmentList = async()=>{
         setPending(true)
         let response = await fetch('http://localhost:5000/api/appointment-list', {
+=======
+    const base_url = import.meta.env.VITE_BASE_URL
+
+    const getAppointmentList = async()=>{
+        setPending(true)
+        let response = await fetch(`${base_url}/api/appointment-list`, {
+>>>>>>> Stashed changes
             method:"POST",
             headers:{
                 'Content-Type':'application/json'
@@ -22,7 +30,11 @@ const Appointments = () => {
 
     const appointmentHistory= async()=>{
         setPending(false)
+<<<<<<< Updated upstream
         let response = await fetch('http://localhost:5000/api/appointment-history', {
+=======
+        let response = await fetch(`${base_url}/api/appointment-history`, {
+>>>>>>> Stashed changes
             method:"POST",
             headers:{
                 'Content-Type':'application/json'
@@ -34,7 +46,11 @@ const Appointments = () => {
     };
 
     const acceptAppoint = async (appointmentId, patientId)=>{
+<<<<<<< Updated upstream
         let response = await fetch('http://localhost:5000/api/accept-appointment',{
+=======
+        let response = await fetch(`${base_url}/api/accept-appointment`,{
+>>>>>>> Stashed changes
         method:"POST",
         headers:{
             'Content-Type':'application/json'
@@ -50,7 +66,11 @@ const Appointments = () => {
     };
 
     const rejectAppoint = async (appointmentId, patientId)=>{
+<<<<<<< Updated upstream
         let response = await fetch('http://localhost:5000/api/reject-appointment',{
+=======
+        let response = await fetch(`${base_url}/api/reject-appointment`,{
+>>>>>>> Stashed changes
         method:"POST",
         headers:{
             'Content-Type':'application/json'

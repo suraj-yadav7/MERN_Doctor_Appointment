@@ -6,9 +6,13 @@ import Pagination from './Pagination';
 const UserAppointment = () => {
 
     const [userBookedAppoint, setUserBookdAppoint] = useState('')
+    const [loading, setLoading] = useState(false)
+    const base_url = import.meta.env.VITE_BASE_URL
+
 
     const getUserAppointments = async()=>{
-        let response = await fetch('http://localhost:5000/api/user-appointments', {
+        setLoading(true)
+        let response = await fetch(`${base_url}/api/user-appointments`, {
             method:'POST', 
             headers:{
                 'Content-Type':'application/json'
@@ -17,10 +21,11 @@ const UserAppointment = () => {
         })
         let result = await response.json()
         if(result.status){
+            setLoading(false)
             setUserBookdAppoint(result.data)
         }
     }
-
+ 
     const [currentPage, setCurrentPage] =useState(1)
     const itemsPerPage = 4
     const startIndex = (currentPage-1)*itemsPerPage
@@ -36,9 +41,11 @@ const UserAppointment = () => {
   return (
     <>
     <Layout>
+        {
+         !loading?
         <div className='userAppoint-container'>
             <div className='phone:text-xl'>
-                {userBookedAppoint && userBookedAppoint.length<1?<div><h4>No Appointments are booked</h4></div>:  userBookedAppoint&& sliceduserBookedAppoint.map((userAppoint) =>(
+                {userBookedAppoint && userBookedAppoint.length<1?<div className='text-2xl phone:text-lg sm:text-xl'><h4>No Appointments are booked</h4></div>:  userBookedAppoint&& sliceduserBookedAppoint.map((userAppoint) =>(
                     <div className='border border-yellow-200 text-2xl phone:text-base sm:text-xl' key={userBookedAppoint.appointmentId} >
                         <ul className='flex flex-row gap-4 flex-wrap justify-start py-2 pl-2 capitalize '>
                             <li className='basis-1/5 xl:basis-1/4'><span className='font-medium'>Doctor Name</span>: {userAppoint.doctorName}</li>
@@ -58,6 +65,8 @@ const UserAppointment = () => {
                     :''
                 }
         </div>
+        :<div className='border border-red-100 p-2 text-center text-2xl phone:text-lg sm:text-xl'><h3>Fetching Appointment Details Please Wait.... </h3></div>
+        }
     </Layout>
     </>
   )

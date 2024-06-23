@@ -3,11 +3,19 @@ import Layout from './Layout'
 import Pagination from './Pagination'
 
 const AdminDoctorList = () => {
+<<<<<<< Updated upstream
+=======
+    const base_url = import.meta.env.VITE_BASE_URL
+>>>>>>> Stashed changes
 
     const [allDoctors, setAllDoctors] = useState('')
 
     const getAllDoctorList = async()=>{
+<<<<<<< Updated upstream
         let response = await fetch('http://localhost:5000/api/get-doctorList',{
+=======
+        let response = await fetch(`${base_url}/api/get-doctorList`,{
+>>>>>>> Stashed changes
             method:'GET',
             headers:{
                 'Content-Type':'application/json'
@@ -16,7 +24,11 @@ const AdminDoctorList = () => {
         let result = await response.json()
         console.log("response: ", result)
         setAllDoctors(result.drData)
+<<<<<<< Updated upstream
     }
+=======
+    };
+>>>>>>> Stashed changes
 
 // Pagination for user/patient 
 const [currentPage, setCurrentPage] = useState(1)

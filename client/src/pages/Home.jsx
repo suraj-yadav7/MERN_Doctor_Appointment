@@ -23,13 +23,14 @@ const Home = () => {
   const [drList, setDrList] = useState('')
   const [admin, setAdmin] = useState('')
   const [doctor, setDoctor] = useState('')
+  const base_url = import.meta.env.VITE_BASE_URL
   
   const dispatch = useDispatch();
 
 // Authenticate all user and send their data in store
 const authUser=async()=>{
   try{
-    let response = await fetch('http://localhost:5000/api/getUserData',{
+    let response = await fetch(`${base_url}/api/getUserData`,{
       method:'POST',
       headers:{
         authorization:'Bearer '+sessionStorage.getItem('token'),
@@ -51,14 +52,13 @@ const authUser=async()=>{
 // fetching doctor list for user/patient
 const doctorList=async()=>{
   try{
-    let response = await fetch("http://localhost:5000/api/get-doctorList",{
+    let response = await fetch(`${base_url}/api/get-doctorList`,{
       method:'GET',
       headers:{
         'Content-Type':'application/json'
       }
     })
     let result = await response.json()
-    console.log("DrList: ", result.drData)
     setDrList(result.drData)
   }
   catch(error){
@@ -87,7 +87,7 @@ const handleDateChange = (date,id) => {
 const handleBookAppointment = async(drData)=>{
   if(drData.drId==drID){
     try{
-      let response = await fetch('http://localhost:5000/api/doctor-appointment',{
+      let response = await fetch(`${base_url}/api/doctor-appointment`,{
         method:'POST',
         headers:{
           'Content-Type':'application/json'
@@ -96,7 +96,6 @@ const handleBookAppointment = async(drData)=>{
       })
 
       let result = await response.json()
-      console.log("appointment booking: ", result)
       if(result.status){
         toast.success(result.message)
         setSelectedDate(null)
@@ -166,7 +165,7 @@ useEffect(()=>{
                 <button button onClick={()=> handleBookAppointment(dr)} className='border border-gray-600 rounded-md my-2 mt-4 px-1 bg-[#7ABA78] text-white hover:bg-[#8ddd8b] hover:text-white'>Book Now</button>
             </div>  
           </div>
-          )) :<div><h4>Fething Doctor List.... </h4></div>}
+          )) :<div className='text-2xl phone:text-lg sm:text-xl'><h4>Fetching Data Please Wait.... </h4></div>}
         </div>
         {
           drList && drList.length>0?

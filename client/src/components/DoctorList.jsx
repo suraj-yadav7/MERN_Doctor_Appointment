@@ -7,12 +7,21 @@ const DoctorList = ()=>{
     const [drPendingList, setDrPendingList] = useState('')
     const [drApprovedList, setDrApprovedList] = useState('')
     const [doctorList, setdoctorList] = useState(true)
+<<<<<<< Updated upstream
+=======
+    const base_url = import.meta.env.VITE_BASE_URL
+
+>>>>>>> Stashed changes
 
     let adminId=sessionStorage.getItem('userId')
     // fetching Doctor Pending List
     const getDoctorList = async()=>{
         setdoctorList(true)
+<<<<<<< Updated upstream
         let response = await fetch('http://localhost:5000/api/doctor-pendinglist',{
+=======
+        let response = await fetch(`${base_url}/api/doctor-pendinglist`,{
+>>>>>>> Stashed changes
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
@@ -26,7 +35,11 @@ const DoctorList = ()=>{
     // fetch Docotor Approval List
     const getDoctorApprovalList=async()=>{
         setdoctorList(false)
+<<<<<<< Updated upstream
         let response = await fetch('http://localhost:5000/api/doctor-approvedlist',{
+=======
+        let response = await fetch(`${base_url}/api/doctor-approvedlist`,{
+>>>>>>> Stashed changes
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
@@ -39,7 +52,11 @@ const DoctorList = ()=>{
 
     // Request to admin for Doctor account approval/registration
     const approveDrProfile = async(doctorId)=>{
+<<<<<<< Updated upstream
         let response = await fetch('http://localhost:5000/api/account-approval',{
+=======
+        let response = await fetch(`${base_url}/api/account-approval`,{
+>>>>>>> Stashed changes
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
@@ -55,7 +72,11 @@ const DoctorList = ()=>{
     };
 
     const rejectDrProfile = async (doctorId)=>{
+<<<<<<< Updated upstream
         let response  = await fetch('http://localhost:5000/api/reject-doctor', {
+=======
+        let response  = await fetch(`${base_url}/api/reject-doctor`, {
+>>>>>>> Stashed changes
             method:'POST',
             headers:{
                 'Content-Type':'application/json'

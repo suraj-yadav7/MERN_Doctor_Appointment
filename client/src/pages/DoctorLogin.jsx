@@ -7,16 +7,28 @@ const DoctorLogin = ()=>{
 
     const[drLogin, setDrLogin] = useState('')
     const navigate = useNavigate()
+<<<<<<< Updated upstream
+=======
+    const base_url = import.meta.env.VITE_BASE_URL
+>>>>>>> Stashed changes
 
     const handleChange =(event)=>{
         const {name, value} =event.target
         setDrLogin({...drLogin, [name]:value})
+<<<<<<< Updated upstream
     }
+=======
+    };
+>>>>>>> Stashed changes
 
     const doctorlogin = async()=>{
         try{
 
+<<<<<<< Updated upstream
             let response = await fetch('http://localhost:5000/api/doctor-login',{
+=======
+            let response = await fetch(`${base_url}/api/doctor-login`,{
+>>>>>>> Stashed changes
                 method:'POST',
                 headers:{
                     'Content-Type':'application/json'

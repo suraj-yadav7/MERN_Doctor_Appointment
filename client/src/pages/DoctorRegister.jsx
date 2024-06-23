@@ -15,6 +15,10 @@ const DoctorRegister = () => {
     experience:'',
     fees:''
   })
+<<<<<<< Updated upstream
+=======
+  const base_url = import.meta.env.VITE_BASE_URL
+>>>>>>> Stashed changes
   
   const handleChange=(event)=>{
     const {name, value} = event.target
@@ -25,8 +29,12 @@ const DoctorRegister = () => {
 
   const createDocAcc = async()=>{
     try{
+<<<<<<< Updated upstream
 
       let response = await fetch('http://localhost:5000/api/doctor-register',{
+=======
+      let response = await fetch(`${base_url}/api/doctor-register`,{
+>>>>>>> Stashed changes
         method:'POST',
         headers:{
           'Content-Type':'application/json'
